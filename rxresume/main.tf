@@ -161,6 +161,7 @@ resource "aws_db_instance" "rds_instance" {
   engine_version       = "15.3"
   instance_class       = "db.t3.micro"
   allocated_storage    = 20
+  db_name              = "mydb"
   storage_type         = "gp2"
   identifier           = "my-rds-instance"
   username             = "myuser"

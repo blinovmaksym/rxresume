@@ -20,3 +20,10 @@
 #   target_id        = aws_instance.ec2_instance.id
 #   port             = 80
 # }
+
+
+aws rds describe-db-instances --db-instance-identifier my-rds-instance --region us-east-1
+psql --host=my-rds-instance --port=5432 --username=myuser --password --dbname=<dbname>
+
+
+psql --host=my-rds-instance.cj0df8ohbzns.us-east-1.rds.amazonaws.com --port=5432 --username=myuser --password
