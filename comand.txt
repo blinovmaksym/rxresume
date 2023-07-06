@@ -27,3 +27,8 @@ psql --host=my-rds-instance --port=5432 --username=myuser --password --dbname=<d
 
 
 psql --host=my-rds-instance.cj0df8ohbzns.us-east-1.rds.amazonaws.com --port=5432 --username=myuser --password
+
+
+sudo apt-get update
+sudo apt-get install postgresql-client
+psql --host=my-rds-instance.cj0df8ohbzns.us-east-1.rds.amazonaws.com --port=5432 --username=myuser --password --dbname=mydb
