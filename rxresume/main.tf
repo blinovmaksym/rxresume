@@ -66,3 +66,5 @@ resource "aws_instance" "ec2_instance" {
 #     Name = "test-env-gw"
 #   }
 # }
+
+
