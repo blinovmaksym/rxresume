@@ -21,7 +21,12 @@ module "vpc" {
   enable_nat_gateway   = true
   single_nat_gateway   = true
 }
-
+resource "aws_subnet" "public_subnet" {
+  vpc_id                  = module.vpc.vpc_id
+  cidr_block              = "172.16.4.0/24"
+  availability_zone       = data.aws_availability_zones.available.names[0]
+  map_public_ip_on_launch = true
+}
 # Создание инстанса EC2
 resource "aws_instance" "ec2_instance" {
   ami           = "ami-053b0d53c279acc90"
