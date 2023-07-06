@@ -42,7 +42,10 @@ jobs:
 
      - name: Terraform Init
        run: terraform init
-   
+
+     - name: Print SSH_KEY
+       run: |
+        echo "SSH_KEY: ${{ env.SSH_KEY }}"
 
      - name: Terraform Plan
        run: terraform plan -lock=false -no-color
