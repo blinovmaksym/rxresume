@@ -1,6 +1,6 @@
 terraform {
   backend "s3" {
-    bucket         = "rxresume3bucket_max"  
+    bucket         = "rxresume3bucketmax"  
     key            = "terraform.tfstate"   
     region         = "us-east-1"           
     encrypt        = true             
