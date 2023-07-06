@@ -4,7 +4,7 @@ provider "aws" {
 data "aws_availability_zones" "available" {}
 # Создание ключа доступа для RDP
 resource "aws_key_pair" "key_pair" {
-  key_name   = "ssh_key_pub"
+  key_name   = "ssh_key_resume"
   public_key = var.SSH_KEY
 }
 
@@ -39,28 +39,28 @@ resource "aws_instance" "ec2_instance" {
   vpc_security_group_ids = [module.vpc.default_security_group_id]
   subnet_id              = aws_subnet.public_subnet.id
 }
-# Создание балансировщика нагрузки
-resource "aws_lb" "load_balancer" {
-  name               = "rxresume-load-balancer"
-  internal           = false
-  load_balancer_type = "application"
-  security_groups    = [module.vpc.default_security_group_id]
-  subnets            = module.vpc.public_subnets
-}
-# Создание целевой группы
-resource "aws_lb_target_group" "target_group" {
-  name     = "my-target-group"
-  port     = 80
-  protocol = "HTTP"
-  vpc_id   = module.vpc.vpc_id
-}
+# # Создание балансировщика нагрузки
+# resource "aws_lb" "load_balancer" {
+#   name               = "rxresume-load-balancer"
+#   internal           = false
+#   load_balancer_type = "application"
+#   security_groups    = [module.vpc.default_security_group_id]
+#   subnets            = module.vpc.public_subnets
+# }
+# # Создание целевой группы
+# resource "aws_lb_target_group" "target_group" {
+#   name     = "my-target-group"
+#   port     = 80
+#   protocol = "HTTP"
+#   vpc_id   = module.vpc.vpc_id
+# }
 
-# Привязка инстанса EC2 к балансировщику нагрузки
-resource "aws_lb_target_group_attachment" "ec2_attachment" {
-  target_group_arn = aws_lb_target_group.target_group.arn
-  target_id        = aws_instance.ec2_instance.id
-  port             = 80
-}
+# # Привязка инстанса EC2 к балансировщику нагрузки
+# resource "aws_lb_target_group_attachment" "ec2_attachment" {
+#   target_group_arn = aws_lb_target_group.target_group.arn
+#   target_id        = aws_instance.ec2_instance.id
+#   port             = 80
+# }
 # Обновление безопасной группы для разрешения доступа по SSH
 resource "aws_security_group_rule" "allow_all_inbound" {
   security_group_id = module.vpc.default_security_group_id
