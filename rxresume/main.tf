@@ -60,9 +60,9 @@ resource "aws_instance" "ec2_instance" {
   subnet_id              = aws_subnet.public_subnet.id
 }
 
-resource "aws_internet_gateway" "test-env-gw" {
-  vpc_id = module.vpc.vpc_id
-tags = {
-    Name = "test-env-gw"
-  }
-}
+# resource "aws_internet_gateway" "test-env-gw" {
+#   vpc_id = module.vpc.vpc_id
+# tags = {
+#     Name = "test-env-gw"
+#   }
+# }
