@@ -87,3 +87,4 @@ resource "aws_security_group_rule" "icmp_rule" {
   protocol          = "icmp"
   cidr_blocks       = ["0.0.0.0/0"]
 }
+
