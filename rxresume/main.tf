@@ -173,7 +173,3 @@ resource "aws_db_instance" "rds_instance" {
     Name = "rds-instance"
   }
 }
-
-
-
-
