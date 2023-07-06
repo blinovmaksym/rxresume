@@ -17,9 +17,9 @@ jobs:
   terraform-CI:
     name: "Terraform"
     runs-on: ubuntu-latest
-    # defaults:
-    #   run:
-    #     working-directory: rxresume
+    defaults:
+      run:
+        working-directory: rxresume
 
     steps:
      - name: Checkout code
@@ -34,7 +34,9 @@ jobs:
      - name: Create bucket if dosn't exists
        env:
         SCRIPT_DIR: ${{ github.workspace }}/rxresume/scripts
-       run: bash  $SCRIPT_DIR/create-s3.sh
+       run: |
+        bash $SCRIPT_DIR/create-s3.sh > output.log
+        cat output.log
 
      - name: Terraform Init
        id: init
