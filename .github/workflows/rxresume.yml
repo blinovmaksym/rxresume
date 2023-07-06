@@ -32,11 +32,7 @@ jobs:
           terraform_version: latest
           terraform_wrapper: false
 
-     - name: Checkout aws
-       run: | 
-        aws --version
-        aws configure list     
-     
+    
      - name: Create bucket if dosn't exists
        env:
         SCRIPT_DIR: ${{ github.workspace }}/rxresume/scripts
