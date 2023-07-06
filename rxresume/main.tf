@@ -31,14 +31,43 @@ resource "aws_subnet" "public_subnet" {
     Name = "my-public-subnet"
   }
 }
+
+resource "aws_internet_gateway" "rxresume-GW" {
+  vpc_id = module.vpc.vpc_id
+
+  tags = {
+    Name = "rxresume-GW"
+  }
+}
+
+resource "aws_route_table" "rxresume-RT" {
+  vpc_id = module.vpc.vpc_id
+
+  route {
+    cidr_block = "172.16.0.0/16"
+    gateway_id = aws_internet_gateway.rxresume-GW.id
+  } 
+
+  tags = {
+    Name = "rxresume-RT"
+  }
+}
+
+resource "aws_route_table_association" "a-front-net" {
+  subnet_id      = aws_subnet.public_subnet.id
+  route_table_id = aws_route_table.rxresume-RT.id
+}
+
+
 resource "aws_security_group" "ingress-all-test" {
 name = "allow-all-sg"
 vpc_id = module.vpc.vpc_id
 ingress {
+  description      = "SSH from VPC"
     cidr_blocks = [
-      "0.0.0.0/0"
+      "172.16.0.0/16"
     ]
-from_port = 22
+    from_port = 22
     to_port = 22
     protocol = "tcp"
   }
@@ -47,8 +76,11 @@ from_port = 22
    from_port = 0
    to_port = 0
    protocol = "-1"
-   cidr_blocks = ["0.0.0.0/0"]
+   cidr_blocks = ["172.16.0.0/16"]
  }
+   tags = {
+    Name = "ssh-sg"
+  }
 }
 
 # Создание инстанса EC2
@@ -56,15 +88,11 @@ resource "aws_instance" "ec2_instance" {
   ami           = "ami-053b0d53c279acc90"
   instance_type = "t2.small"
   key_name      = aws_key_pair.key_pair.key_name
-  vpc_security_group_ids = ["${aws_security_group.ingress-all-test.id}"]
+  vpc_security_group_ids = [aws_security_group.ingress-all-test.id]
   subnet_id              = aws_subnet.public_subnet.id
+  associate_public_ip_address = true
+    tags = {
+    Name = "app-server"
+  }
 }
-
-# resource "aws_internet_gateway" "test-env-gw" {
-#   vpc_id = module.vpc.vpc_id
-# tags = {
-#     Name = "test-env-gw"
-#   }
-# }
-
 
