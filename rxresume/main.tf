@@ -1,7 +1,7 @@
 provider "aws" {
   region = "us-east-1"
 }
-
+data "aws_availability_zones" "available" {}
 # Создание ключа доступа для RDP
 resource "aws_key_pair" "key_pair" {
   key_name   = "ssh_key_pub"
@@ -15,6 +15,7 @@ module "vpc" {
 
   name                 = "rxresume-vpc"
   cidr                 = "172.16.0.0/16"
+  azs                  = data.aws_availability_zones.available.names
   private_subnets      = ["172.16.1.0/24", "172.16.2.0/24", "172.16.3.0/24"]
   public_subnets       = ["172.16.4.0/24", "172.16.5.0/24", "172.16.6.0/24"]
   enable_nat_gateway   = true
