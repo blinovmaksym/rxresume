@@ -1,0 +1,52 @@
+name: "Deploy rxresume"
+on:
+  push:
+    paths:
+    - 'rxresume/**'
+    - '.github/workflows/rxresume.yml'
+    branches:
+    - main
+  workflow_dispatch:
+env:
+  AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+  AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+  SSH_KEY: ${{ secrets.SSH_KEY }}
+jobs:
+  terraform-CI:
+    name: "Terraform"
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: rxresume
+
+    steps:
+     - name: Checkout code
+       uses: actions/checkout@v3
+
+     - name: Setup Terraform
+       uses: hashicorp/setup-terraform@v2
+       with:
+          terraform_version: latest
+          terraform_wrapper: false
+     
+     - name: Create bucket if dosn't exists
+       env:
+        SCRIPT_DIR: ${{ github.workspace }}/rxresume/scripts
+       run: bash  $SCRIPT_DIR/create-s3.sh
+
+     - name: Terraform Init
+       id: init
+       run: terraform init
+   
+
+     - name: Terraform Plan
+       id: plan
+       run: terraform plan -lock=false -no-color
+
+     - name: Terraform Apply
+       if: "!contains(github.event.head_commit.message, 'destroy')"
+       run: terraform apply -auto-approve -lock=false
+
+     - name: Terraform Destroy
+       if: contains(github.event.head_commit.message, 'destroy')
+       run: terraform destroy -auto-approve -lock=false
