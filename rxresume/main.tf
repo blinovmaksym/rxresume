@@ -128,7 +128,7 @@ resource "aws_instance" "ec2_instance" {
   ami           = "ami-053b0d53c279acc90"
   instance_type = "t2.small"
   key_name      = aws_key_pair.key_pair.key_name
-  vpc_security_group_ids = [aws_security_group.ingress-all-test.id]
+  vpc_security_group_ids = [aws_security_group.rxresume-sg.id]
   subnet_id              = aws_subnet.public_subnet.id
   associate_public_ip_address = true
     tags = {
