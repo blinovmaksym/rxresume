@@ -30,6 +30,9 @@ jobs:
        with:
           terraform_version: latest
           terraform_wrapper: false
+
+     - name: Checkout aws
+       run: aws --version    
      
      - name: Create bucket if dosn't exists
        env:
