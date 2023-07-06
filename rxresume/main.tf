@@ -66,3 +66,5 @@ resource "aws_security_group_rule" "ssh_rule" {
   protocol          = "tcp"
   cidr_blocks       = ["0.0.0.0/0"]
 }
+
+
