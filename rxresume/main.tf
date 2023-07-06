@@ -158,8 +158,8 @@ resource "aws_db_subnet_group" "rds_subnet_group" {
 }
 resource "aws_db_instance" "rds_instance" {
   engine               = "postgres"
-  engine_version       = "14"
-  instance_class       = "db.t2.micro"
+  engine_version       = "15.3"
+  instance_class       = "db.t3.micro"
   allocated_storage    = 20
   storage_type         = "gp2"
   identifier           = "my-rds-instance"
