@@ -47,7 +47,7 @@ jobs:
 
      - name: Terraform Plan
        id: plan
-       run: terraform plan -lock=false -no-color
+       run: terraform plan -var "SSH_KEY=${{ env.SSH_KEY }}" -lock=false -no-color
 
      - name: Terraform Apply
        if: "!contains(github.event.head_commit.message, 'destroy')"
