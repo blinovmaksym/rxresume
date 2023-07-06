@@ -12,7 +12,7 @@ env:
   AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
   AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
   AWS_REGION: ${{ secrets.AWS_REGION }} 
-  SSH_KEY: ${{ secrets.SSH_KEY }}
+  SSH_KEY: ${{ vars.SSH_KEY }}
 
 jobs:
   terraform-CI:
@@ -47,7 +47,7 @@ jobs:
 
      - name: Terraform Plan
        id: plan
-       run: terraform plan -var "SSH_KEY=${{ env.SSH_KEY }}" -lock=false -no-color
+       run: terraform plan -lock=false -no-color
 
      - name: Terraform Apply
        if: "!contains(github.event.head_commit.message, 'destroy')"
