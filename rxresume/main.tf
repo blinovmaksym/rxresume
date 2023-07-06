@@ -27,7 +27,7 @@ resource "aws_vpc" "rxresume-vpc" {
 #   single_nat_gateway   = true
 # }
 resource "aws_subnet" "public_subnet" {
-  vpc_id                  = module.vpc.vpc_id
+  vpc_id = aws_vpc.rxresume-vpc.id
   cidr_block              = "172.16.5.0/24"
   availability_zone       = data.aws_availability_zones.available.names[0]
   map_public_ip_on_launch = true
