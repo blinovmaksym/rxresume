@@ -14,6 +14,7 @@ env:
   AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
   AWS_REGION: ${{ secrets.AWS_REGION }} 
   SSH_KEY: ${{ secrets.SSH_KEY }}
+
 jobs:
   terraform-CI:
     name: "Terraform"
@@ -41,7 +42,7 @@ jobs:
         cat output.log
 
      - name: Terraform Init
-       run: terraform init
+       run: terraform init -var="SSH_KEY=${{ secrets.SSH_KEY }}"
 
      - name: Print SSH_KEY
        run: |
