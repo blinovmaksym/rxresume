@@ -22,6 +22,7 @@ module "vpc" {
   single_nat_gateway   = true
 }
 resource "aws_subnet" "public_subnet" {
+  name= "public_subnet"
   vpc_id                  = module.vpc.vpc_id
   cidr_block              = "172.16.6.0/24"
   availability_zone       = data.aws_availability_zones.available.names[0]
@@ -41,7 +42,7 @@ resource "aws_lb" "load_balancer" {
   internal           = false
   load_balancer_type = "application"
   security_groups    = [module.vpc.default_security_group_id]
-  subnets            = module.vpc.public_subnets
+  subnets            = aws_subnet.public_subnet.subnet_id
 }
 # Создание целевой группы
 resource "aws_lb_target_group" "target_group" {
