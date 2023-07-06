@@ -44,7 +44,7 @@ resource "aws_route_table" "rxresume-RT" {
   vpc_id = module.vpc.vpc_id
 
   route {
-    cidr_block = "172.16.0.0/16"
+    cidr_block = "0.0.0.0/0"
     gateway_id = aws_internet_gateway.rxresume-GW.id
   } 
 
@@ -65,7 +65,7 @@ vpc_id = module.vpc.vpc_id
 ingress {
   description      = "SSH from VPC"
     cidr_blocks = [
-      "172.16.0.0/16"
+      "0.0.0.0/0"
     ]
     from_port = 22
     to_port = 22
@@ -76,7 +76,7 @@ ingress {
    from_port = 0
    to_port = 0
    protocol = "-1"
-   cidr_blocks = ["172.16.0.0/16"]
+   cidr_blocks = ["0.0.0.0/0"]
  }
    tags = {
     Name = "ssh-sg"
