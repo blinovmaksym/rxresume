@@ -44,17 +44,13 @@ jobs:
      - name: Terraform Init
        run: terraform init -var="SSH_KEY=${{ secrets.SSH_KEY }}"
 
-     - name: Print SSH_KEY
-       run: |
-        echo "SSH_KEY: ${{ env.SSH_KEY }}"
-
      - name: Terraform Plan
-       run: terraform plan -lock=false -no-color
+       run: terraform plan -var="SSH_KEY=${{ secrets.SSH_KEY }}" -lock=false -no-color
 
      - name: Terraform Apply
        if: "!contains(github.event.head_commit.message, 'destroy')"
-       run: terraform apply -auto-approve -lock=false
+       run: terraform apply -var="SSH_KEY=${{ secrets.SSH_KEY }}" -auto-approve -lock=false
 
      - name: Terraform Destroy
        if: contains(github.event.head_commit.message, 'destroy')
-       run: terraform destroy -auto-approve -lock=false
+       run: terraform destroy  -var="SSH_KEY=${{ secrets.SSH_KEY }}" -auto-approve -lock=false
