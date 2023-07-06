@@ -62,13 +62,28 @@ resource "aws_lb_target_group_attachment" "ec2_attachment" {
   port             = 80
 }
 # Обновление безопасной группы для разрешения доступа по SSH
-resource "aws_security_group_rule" "ssh_rule" {
+resource "aws_security_group_rule" "allow_all_inbound" {
   security_group_id = module.vpc.default_security_group_id
   type              = "ingress"
-  from_port         = 22
-  to_port           = 22
-  protocol          = "tcp"
+  from_port         = 0
+  to_port           = 0
+  protocol          = "-1"
   cidr_blocks       = ["0.0.0.0/0"]
 }
 
-
+resource "aws_security_group_rule" "allow_all_outbound" {
+  security_group_id = module.vpc.default_security_group_id
+  type              = "egress"
+  from_port         = 0
+  to_port           = 0
+  protocol          = "-1"
+  cidr_blocks       = ["0.0.0.0/0"]
+}
+resource "aws_security_group_rule" "icmp_rule" {
+  security_group_id = module.vpc.default_security_group_id
+  type              = "ingress"
+  from_port         = -1
+  to_port           = -1
+  protocol          = "icmp"
+  cidr_blocks       = ["0.0.0.0/0"]
+}
