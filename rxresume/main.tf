@@ -83,13 +83,13 @@ ingress {
     to_port = 22
     protocol = "tcp"
   }
-  ingress {
-    description      = "For app"
-    from_port        = 3000
-    to_port          = 3000
-    protocol         = "tcp"
-    cidr_blocks      = ["0.0.0.0/0"]
-  }
+ingress {
+  description      = "For app"
+  from_port        = 3000
+  to_port          = 3000
+  protocol         = "tcp"
+  cidr_blocks      = ["0.0.0.0/0"]
+}
 // Terraform removes the default rule
   egress {
    from_port = 0
@@ -115,13 +115,13 @@ resource "aws_security_group" "rxresume-sg-db" {
     cidr_blocks      = ["10.0.1.0/24"]
   }
 
-    ingress {
-    description      = "DB from VPC"
-    from_port        = 5432
-    to_port          = 5432
-    protocol         = "tcp"
-    cidr_blocks      = ["10.0.1.0/24"]
-  }
+  ingress {
+  description      = "DB from VPC"
+  from_port        = 5432
+  to_port          = 5432
+  protocol         = "tcp"
+  cidr_blocks      = ["10.0.1.0/24"]
+}
 
   egress {
     from_port        = 0
