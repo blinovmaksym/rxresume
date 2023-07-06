@@ -13,19 +13,6 @@ resource "aws_vpc" "rxresume-vpc" {
         Name = "rxresume-net"
   }
 }
-# module "vpc" {
-#   source  = "terraform-aws-modules/vpc/aws"
-#   version = "5.0.0"
-
-
-#   name                 = "rxresume-vpc"
-#   cidr                 = "172.16.0.0/16"
-#   azs                  = data.aws_availability_zones.available.names
-#   private_subnets      = ["172.16.1.0/24", "172.16.2.0/24"]
-#   public_subnets       = ["172.16.3.0/24", "172.16.4.0/24"]
-#   enable_nat_gateway   = true
-#   single_nat_gateway   = true
-# }
 resource "aws_subnet" "public_subnet" {
 vpc_id = aws_vpc.rxresume-vpc.id
   cidr_block              = "10.0.1.0/24"
@@ -76,6 +63,13 @@ ingress {
     to_port = 22
     protocol = "tcp"
   }
+  ingress {
+    description      = "For  app"
+    from_port        = 3000
+    to_port          = 3000
+    protocol         = "tcp"
+    cidr_blocks      = ["0.0.0.0/0"]
+  }
 // Terraform removes the default rule
   egress {
    from_port = 0
@@ -100,4 +94,3 @@ resource "aws_instance" "ec2_instance" {
     Name = "app-server"
   }
 }
-
