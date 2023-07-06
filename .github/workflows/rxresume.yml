@@ -37,9 +37,7 @@ jobs:
      - name: Create bucket if dosn't exists
        env:
         SCRIPT_DIR: ${{ github.workspace }}/rxresume/scripts
-       run: |
-        bash $SCRIPT_DIR/create-s3.sh > output.log
-        cat output.log
+       run: bash $SCRIPT_DIR/create-s3.sh > output.log
 
      - name: Terraform Init
        run: terraform init -var="SSH_KEY=${{ secrets.SSH_KEY }}"
