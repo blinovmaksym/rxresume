@@ -27,6 +27,6 @@ resource "aws_instance" "ec2_instance" {
   instance_type = "t2.small"
   key_name      = aws_key_pair.key_pair.key_name
   vpc_security_group_ids = [module.vpc.default_security_group_id]
-  subnet_id     = module.vpc.public_subnet_ids[0]
+  subnet_id     = module.vpc.public_subnets[0]
 }
 
