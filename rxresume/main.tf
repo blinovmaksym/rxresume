@@ -23,7 +23,7 @@ vpc_id = aws_vpc.rxresume-vpc.id
   }
 }
 
-resource "aws_subnet" "back-end-net" {
+resource "aws_subnet" "rds_subnet1" {
   vpc_id     = aws_vpc.rxresume-vpc.id
   cidr_block = "10.0.2.0/24"
   availability_zone       = data.aws_availability_zones.available.names[1]  # Используйте нужную доступную зону
@@ -34,6 +34,16 @@ resource "aws_subnet" "back-end-net" {
   }
 }
 
+resource "aws_subnet" "rds_subnet2" {
+  vpc_id     = aws_vpc.rxresume-vpc.id
+  cidr_block = "10.0.3.0/24"
+  availability_zone       = data.aws_availability_zones.available.names[2]  # Используйте нужную доступную зону
+
+
+  tags = {
+    Name = "Private-subnet"
+  }
+}
 resource "aws_internet_gateway" "rxresume-GW" {
   vpc_id = aws_vpc.rxresume-vpc.id
 
@@ -140,7 +150,7 @@ resource "aws_instance" "ec2_instance" {
 # Создание инстанса RDS (PostGres)
 resource "aws_db_subnet_group" "rds_subnet_group" {
   name       = "rds-subnet-group"
-  subnet_ids = [aws_subnet.back-end-net.id]
+  subnet_ids = [aws_subnet.rds_subnet1.id,aws_subnet.rds_subnet2.id]
 
   tags = {
     Name = "rds-subnet-group"
