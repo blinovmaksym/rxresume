@@ -17,10 +17,18 @@ resource "aws_subnet" "public_subnet" {
 vpc_id = aws_vpc.rxresume-vpc.id
   cidr_block              = "10.0.1.0/24"
   availability_zone       = data.aws_availability_zones.available.names[0]
-  map_public_ip_on_launch = true
 
   tags = {
-    Name = "my-public-subnet"
+    Name = "Public-subnet"
+  }
+}
+
+resource "aws_subnet" "back-end-net" {
+  vpc_id     = aws_vpc.rxresume-vpc.id
+  cidr_block = "10.0.2.0/24"
+
+  tags = {
+    Name = "Private-subnet"
   }
 }
 
@@ -51,8 +59,8 @@ resource "aws_route_table_association" "a-front-net" {
 }
 
 
-resource "aws_security_group" "ingress-all-test" {
-name = "allow-all-sg"
+resource "aws_security_group" "rxresume-sg" {
+name = "ssh-app-web"
 vpc_id = aws_vpc.rxresume-vpc.id
 ingress {
   description      = "SSH from VPC"
@@ -64,7 +72,7 @@ ingress {
     protocol = "tcp"
   }
   ingress {
-    description      = "For  app"
+    description      = "For app"
     from_port        = 3000
     to_port          = 3000
     protocol         = "tcp"
@@ -82,6 +90,39 @@ ingress {
   }
 }
 
+resource "aws_security_group" "rxresume-sg-db" {
+  name        = "ssh-db"
+  description = "Allow 22 ports traffic"
+  vpc_id      = aws_vpc.rxresume-vpc.id
+
+  ingress {
+    description      = "SSH from VPC"
+    from_port        = 22
+    to_port          = 22
+    protocol         = "tcp"
+    cidr_blocks      = ["10.0.1.0/24"]
+  }
+
+    ingress {
+    description      = "DB from VPC"
+    from_port        = 5432
+    to_port          = 5432
+    protocol         = "tcp"
+    cidr_blocks      = ["10.0.1.0/24"]
+  }
+
+  egress {
+    from_port        = 0
+    to_port          = 0
+    protocol         = "-1"
+    cidr_blocks      = ["0.0.0.0/0"]
+  }
+
+  tags = {
+    Name = "ssh-db-sg"
+  }
+}
+
 # Создание инстанса EC2
 resource "aws_instance" "ec2_instance" {
   ami           = "ami-053b0d53c279acc90"
@@ -92,5 +133,31 @@ resource "aws_instance" "ec2_instance" {
   associate_public_ip_address = true
     tags = {
     Name = "app-server"
+  }
+}
+# Создание инстанса RDS (PostGres)
+resource "aws_db_subnet_group" "rds_subnet_group" {
+  name       = "rds-subnet-group"
+  subnet_ids = [aws_subnet.back-end-net.id]
+
+  tags = {
+    Name = "rds-subnet-group"
+  }
+}
+resource "aws_db_instance" "rds_instance" {
+  engine               = "postgres"
+  engine_version       = "12.7"
+  instance_class       = "db.t2.micro"
+  allocated_storage    = 20
+  storage_type         = "gp2"
+  identifier           = "my-rds-instance"
+  username             = "myuser"
+  password             = "mypassword"
+  publicly_accessible = false
+  db_subnet_group_name = aws_db_subnet_group.rds_subnet_group.name
+  vpc_security_group_ids = [aws_security_group.rxresume-sg-db.id]
+
+  tags = {
+    Name = "rds-instance"
   }
 }
