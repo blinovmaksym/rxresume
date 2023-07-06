@@ -2,6 +2,7 @@ provider "aws" {
   region = "us-east-1"
 }
 data "aws_availability_zones" "available" {}
+
 # Создание ключа доступа для RDP
 resource "aws_key_pair" "key_pair" {
   key_name   = "ssh_key_resume"
