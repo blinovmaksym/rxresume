@@ -126,12 +126,12 @@ jobs:
           sleep 20
 
           # Check if the error occurred and restart if necessary
-          if ssh ubuntu@${{ steps.get-ip.outputs.ip-address }} "[[ \$(docker compose up 2>&1) =~ \"could not find /home/ubuntu/app/server" ]]"; then
-            echo "Error - could not find /home/ubuntu/app/server"
-            ssh ubuntu@${{ steps.get-ip.outputs.ip-address }} "docker stop \$(docker ps -aq)"
-            ssh ubuntu@${{ steps.get-ip.outputs.ip-address }} "docker rm \$(docker ps -aq)"
-            ssh ubuntu@${{ steps.get-ip.outputs.ip-address }} "docker compose up -d --remove-orphans"
-          fi
+          # if ssh ubuntu@${{ steps.get-ip.outputs.ip-address }} "[[ \$(docker compose up 2>&1) =~ \"could not find /home/ubuntu/app/server" ]]"; then
+          #   echo "Error - could not find /home/ubuntu/app/server"
+          #   ssh ubuntu@${{ steps.get-ip.outputs.ip-address }} "docker stop \$(docker ps -aq)"
+          #   ssh ubuntu@${{ steps.get-ip.outputs.ip-address }} "docker rm \$(docker ps -aq)"
+          #   ssh ubuntu@${{ steps.get-ip.outputs.ip-address }} "docker compose up -d --remove-orphans"
+          # fi
 
           # Check Service
           ssh ubuntu@${{ steps.get-ip.outputs.ip-address }} "docker logs $TAG_VALUE" | grep -q "Server is up and running!"
