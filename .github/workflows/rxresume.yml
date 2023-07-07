@@ -95,7 +95,7 @@ jobs:
         env:
           SCRIPT_DIR: ${{ github.workspace }}/rxresume/scripts
           PUBLIC_URL: ${{ steps.get-ip.outputs.ip-address }}
-          PUBLIC_SERVER_URL: ${{ steps.get-ip.outputs.ip-address }}
+          PUBLIC_SERVER_URL: ${{ secrets.SSH_PORT }}
         run: |
           # Create Folder scripts
           ssh ubuntu@${{ steps.get-ip.outputs.ip-address }} 'if [ ! -d "scripts" ]; then mkdir scripts; fi'
