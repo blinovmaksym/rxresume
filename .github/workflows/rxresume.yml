@@ -96,7 +96,7 @@ jobs:
         run: |
           mkdir -p ~/.ssh/
           echo "${{ secrets.SSH_KEY_PRIVATE }}" > ~/.ssh/id_rsa
-          chmod 600 ~/.ssh/id_rsa
+          chmod 400 ~/.ssh/id_rsa
           ssh-keyscan -H ${{ steps.get-ip.outputs.ip-address }} >> ~/.ssh/known_hosts
 
       - name: Run commands on the instance
