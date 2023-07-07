@@ -77,9 +77,8 @@ jobs:
 
       - name: Вывод IP-адреса
         run: |
-          IP_ADDRESS=$(cat $GITHUB_STATE | grep "ip-address=" | cut -d "=" -f 2)
-          echo "IP-адрес EC2: $IP_ADDRESS"
-          echo "IP-адрес EC2: $IP_ADDRESS" >> $GITHUB_OUTPUT
+          echo "IP-адрес EC2: ip-address"
+
 
 
 
