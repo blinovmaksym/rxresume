@@ -33,3 +33,4 @@ could not find /home/ubuntu/app/server: stat /home/ubuntu/app/server: no such fi
 
 docker compose up -d --remove-orphans &
 
+
