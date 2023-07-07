@@ -73,7 +73,7 @@ jobs:
           TAG_VALUE="app-server1"
           IP_ADDRESS=$(aws ec2 describe-instances --filters "Name=instance-state-name,Values=running" "Name=tag:$TAG_KEY,Values=$TAG_VALUE" --query "Reservations[0].Instances[0].PublicIpAddress" --output text)
           echo "IP-адрес EC2: $IP_ADDRESS"
-          set-output name=ip-address::$IP_ADDRESS"
+          ::set-output name=ip-address::$IP_ADDRESS"
 
       - name: Вывод IP-адреса
         run: |
