@@ -73,11 +73,14 @@ jobs:
           TAG_VALUE="app-server1"
           IP_ADDRESS=$(aws ec2 describe-instances --filters "Name=instance-state-name,Values=running" "Name=tag:$TAG_KEY,Values=$TAG_VALUE" --query "Reservations[0].Instances[0].PublicIpAddress" --output text)
           echo "IP-адрес EC2: $IP_ADDRESS"
-          echo "::set-output name=ip-address::$IP_ADDRESS"
+          echo "ip-address=$IP_ADDRESS" >> $GITHUB_STATE
 
       - name: Вывод IP-адреса
         run: |
-          echo "IP-адрес EC2: ${{ steps.get-ip.outputs.ip-address }}"
+          IP_ADDRESS=$(cat $GITHUB_STATE | grep "ip-address=" | cut -d "=" -f 2)
+          echo "IP-адрес EC2: $IP_ADDRESS"
+          echo "IP-адрес EC2: $IP_ADDRESS" >> $GITHUB_OUTPUT
+
 
 
       - name: executing remote ssh commands using ssh key
