@@ -125,7 +125,7 @@ resource "aws_instance" "ec2_instance" {
   subnet_id              = aws_subnet.public_subnet.id
   associate_public_ip_address = true
     tags = {
-    Name = "app-server1"
+    Name = "app-server"
   }
 }
 # Создание инстанса RDS (PostGres)
