@@ -105,7 +105,7 @@ jobs:
           scp $SCRIPT_DIR/change_dockerfile.sh ubuntu@${{ steps.get-ip.outputs.ip-address }}:/home/ubuntu/scripts
 
           # Подключение к удаленному серверу и выполнение скрипта
-          ssh ubuntu@${{ steps.get-ip.outputs.ip-address }} "bash /home/ubuntu/scripts/install.sh"
+          ssh ubuntu@${{ steps.get-ip.outputs.ip-address }} "PUBLIC_URL=${PUBLIC_URL} PUBLIC_SERVER_URL=${PUBLIC_SERVER_URL} bash /home/ubuntu/scripts/install.sh"
       #     echo "wait 20sec"
       #     sleep 20
       #     # Проверка успешного запуска сервера
