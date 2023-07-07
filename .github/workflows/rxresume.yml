@@ -95,7 +95,6 @@ jobs:
         env:
           SCRIPT_DIR: ${{ github.workspace }}/rxresume/scripts
           PUBLIC_URL: ${{ steps.get-ip.outputs.ip-address }}
-          PUBLIC_SERVER_URL: ${{ secrets.SSH_PORT }}
         run: |
           # Create Folder scripts
           ssh ubuntu@${{ steps.get-ip.outputs.ip-address }} 'if [ ! -d "scripts" ]; then mkdir scripts; fi'
@@ -105,7 +104,7 @@ jobs:
           scp $SCRIPT_DIR/change_dockerfile.sh ubuntu@${{ steps.get-ip.outputs.ip-address }}:/home/ubuntu/scripts
 
           # Подключение к удаленному серверу и выполнение скрипта
-          ssh ubuntu@${{ steps.get-ip.outputs.ip-address }} "PUBLIC_URL=${PUBLIC_URL} PUBLIC_SERVER_URL=${PUBLIC_SERVER_URL} bash /home/ubuntu/scripts/install.sh"
+          ssh ubuntu@${{ steps.get-ip.outputs.ip-address }} "PUBLIC_URL=${PUBLIC_URL} bash /home/ubuntu/scripts/install.sh"
       #     echo "wait 20sec"
       #     sleep 20
       #     # Проверка успешного запуска сервера
