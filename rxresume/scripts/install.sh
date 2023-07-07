@@ -34,4 +34,3 @@ chmod +x change_dockerfile.sh
 
 # Выполнение команды в фоновом режиме
 docker compose up -d &
-
