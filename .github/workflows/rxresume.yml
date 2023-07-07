@@ -117,5 +117,9 @@ jobs:
             echo "Server failed to start!"
             exit 1
           fi
+      - name: Run commands on the instance
+        run : |
+         echo " Visi Your Site: http://${{ steps.get-ip.outputs.ip-address }}:3000""
+
 
 
