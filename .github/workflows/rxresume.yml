@@ -16,47 +16,47 @@ env:
   SSH_KEY: ${{ secrets.SSH_KEY }}
 
 jobs:
-  terraform-CI:
-    name: "Terraform"
-    runs-on: ubuntu-latest
-    defaults:
-      run:
-        working-directory: rxresume
+  # terraform-CI:
+  #   name: "Terraform"
+  #   runs-on: ubuntu-latest
+  #   defaults:
+  #     run:
+  #       working-directory: rxresume
 
-    steps:
-     - name: Checkout code
-       uses: actions/checkout@v3
+  #   steps:
+  #    - name: Checkout code
+  #      uses: actions/checkout@v3
 
-     - name: Setup Terraform
-       uses: hashicorp/setup-terraform@v2
-       with:
-          terraform_version: latest
-          terraform_wrapper: false
+  #    - name: Setup Terraform
+  #      uses: hashicorp/setup-terraform@v2
+  #      with:
+  #         terraform_version: latest
+  #         terraform_wrapper: false
 
     
-     - name: Create bucket if dosn't exists
-       env:
-        SCRIPT_DIR: ${{ github.workspace }}/rxresume/scripts
-       run: bash $SCRIPT_DIR/create-s3.sh > output.log
+  #    - name: Create bucket if dosn't exists
+  #      env:
+  #       SCRIPT_DIR: ${{ github.workspace }}/rxresume/scripts
+  #      run: bash $SCRIPT_DIR/create-s3.sh > output.log
 
-     - name: Terraform Init
-       run: terraform init -var="SSH_KEY=${{ secrets.SSH_KEY }}"
+  #    - name: Terraform Init
+  #      run: terraform init -var="SSH_KEY=${{ secrets.SSH_KEY }}"
 
-     - name: Terraform Plan
-       run: terraform plan -var="SSH_KEY=${{ secrets.SSH_KEY }}" -lock=false -no-color
+  #    - name: Terraform Plan
+  #      run: terraform plan -var="SSH_KEY=${{ secrets.SSH_KEY }}" -lock=false -no-color
 
-     - name: Terraform Apply
-       if: "!contains(github.event.head_commit.message, 'destroy')"
-       run: terraform apply -var="SSH_KEY=${{ secrets.SSH_KEY }}" -auto-approve -lock=false
+  #    - name: Terraform Apply
+  #      if: "!contains(github.event.head_commit.message, 'destroy')"
+  #      run: terraform apply -var="SSH_KEY=${{ secrets.SSH_KEY }}" -auto-approve -lock=false
 
-     - name: Terraform Destroy
-       if: contains(github.event.head_commit.message, 'destroy')
-       run: terraform destroy  -var="SSH_KEY=${{ secrets.SSH_KEY }}" -auto-approve -lock=false
+  #    - name: Terraform Destroy
+  #      if: contains(github.event.head_commit.message, 'destroy')
+  #      run: terraform destroy  -var="SSH_KEY=${{ secrets.SSH_KEY }}" -auto-approve -lock=false
 
   terraform-CD:
     name: "Terraform Deploy"
-    needs: 
-        - terraform-CI
+    # needs: 
+    #     - terraform-CI
     if: "!contains(github.event.head_commit.message, 'destroy') "
     runs-on: ubuntu-latest
     defaults:
@@ -76,7 +76,8 @@ jobs:
 
       - name: Вывод IP-адреса
         run: |
-          echo "IP-адрес EC2: ${{ steps.get-ip.outputs.IP_ADDRESS }}"
+          echo "IP-адрес EC2: $IP_ADDRESS"
+          echo "IP-адрес EC2 из предыдущего шага: ${{ steps.get-ip.outputs.IP_ADDRESS }}"
 
 
       - name: executing remote ssh commands using ssh key
