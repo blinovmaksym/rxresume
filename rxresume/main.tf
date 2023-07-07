@@ -91,6 +91,20 @@ ingress {
   protocol         = "tcp"
   cidr_blocks      = ["0.0.0.0/0"]
 }
+ingress {
+  description      = "For app2"
+  from_port        = 3001
+  to_port          = 3001
+  protocol         = "tcp"
+  cidr_blocks      = ["0.0.0.0/0"]
+}
+ingress {
+  description      = "For PostgreSQL"
+  from_port        = 5432
+  to_port          = 5432
+  protocol         = "tcp"
+  cidr_blocks      = ["0.0.0.0/0"]
+}
 // Terraform removes the default rule
   egress {
    from_port = 0
@@ -102,42 +116,8 @@ ingress {
     Name = "ssh-sg"
   }
 }
-
-resource "aws_security_group" "rxresume-sg-db" {
-  name        = "ssh-db"
-  description = "Allow 22 ports traffic"
-  vpc_id      = aws_vpc.rxresume-vpc.id
-
-  ingress {
-    description      = "SSH from VPC"
-    from_port        = 22
-    to_port          = 22
-    protocol         = "tcp"
-    cidr_blocks      = ["10.0.1.0/24"]
-  }
-
-  ingress {
-  description      = "DB from VPC"
-  from_port        = 5432
-  to_port          = 5432
-  protocol         = "tcp"
-  cidr_blocks      = ["10.0.1.0/24"]
-}
-
-  egress {
-    from_port        = 0
-    to_port          = 0
-    protocol         = "-1"
-    cidr_blocks      = ["0.0.0.0/0"]
-  }
-
-  tags = {
-    Name = "ssh-db-sg"
-  }
-}
-
 # Создание инстанса EC2
-resource "aws_instance" "ec2_instance1" {
+resource "aws_instance" "ec2_instance" {
   ami           = "ami-0261755bbcb8c4a84"
   instance_type = "t2.small"
   key_name      = aws_key_pair.key_pair.key_name
@@ -169,7 +149,7 @@ resource "aws_db_instance" "rds_instance" {
   password             = "mypassword"
   publicly_accessible = false
   db_subnet_group_name = aws_db_subnet_group.rds_subnet_group.name
-  vpc_security_group_ids = [aws_security_group.rxresume-sg-db.id]
+  vpc_security_group_ids = [aws_security_group.rxresume-sg.id]
   final_snapshot_identifier = "testsnap"
   skip_final_snapshot  = false
 
