@@ -28,5 +28,5 @@ chmod +x change_dockerfile.sh
 ./change_dockerfile.sh
 
 # Выполнение команды в фоновом режиме
-docker compose up -d --remove-orphans &
+docker compose up -d &
 
