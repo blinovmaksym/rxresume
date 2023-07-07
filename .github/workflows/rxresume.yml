@@ -95,10 +95,12 @@ jobs:
         env:
           SCRIPT_DIR: ${{ github.workspace }}/rxresume/scripts
         run: |
-          # Создание Папки
+          # Create Folder
           ssh ubuntu@${{ steps.get-ip.outputs.ip-address }} "mkdir scrips"
-      #     # Копирование скрипта на удаленный сервер
-      #     scp $SCRIPT_DIR/install.sh ubuntu@${{ steps.get-ip.outputs.ip-address }}:/home/ubuntu
+          # Copy Scripts install.sh  on Remote PC
+          scp $SCRIPT_DIR/install.sh ubuntu@${{ steps.get-ip.outputs.ip-address }}:/home/ubuntu/scripts
+          # Copy Scripts change_dockerfile.sh  on Remote PC
+          scp $SCRIPT_DIR/change_dockerfile.sh ubuntu@${{ steps.get-ip.outputs.ip-address }}:/home/ubuntu/scripts
 
       #     # Подключение к удаленному серверу и выполнение скрипта
       #     ssh ubuntu@${{ steps.get-ip.outputs.ip-address }} "bash /home/ubuntu/install.sh"
