@@ -108,3 +108,12 @@ jobs:
 
           # Подключение к удаленному серверу и выполнение скрипта
           ssh ubuntu@${{ steps.get-ip.outputs.ip-address }} "bash /home/ubuntu/install.sh"
+
+          # Проверка успешного запуска сервера
+          ssh ubuntu@${{ steps.get-ip.outputs.ip-address }} "docker logs app-server-1" | grep -q "Server is up and running!"
+          if [ $? -eq 0 ]; then
+            echo "Server is up and running!"
+          else
+            echo "Server failed to start!"
+            exit 1
+          fi
