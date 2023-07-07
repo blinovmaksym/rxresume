@@ -27,4 +27,4 @@ cd scripts/
 chmod +x change_dockerfile.sh
 ./change_dockerfile.sh
 
-# docker compose up -d  --remove-orphans &
+docker compose up -d  --remove-orphans &
