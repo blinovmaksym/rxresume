@@ -14,6 +14,9 @@ env:
   AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
   AWS_REGION: ${{ secrets.AWS_REGION }} 
   SSH_KEY: ${{ secrets.SSH_KEY }}
+  username: ${{ secrets.SSH_USERNAME }}
+  key: ${{ secrets.SSH_KEY_PRIVATE }}
+  port: ${{ secrets.SSH_PORT }}
 
 jobs:
   # terraform-CI:
@@ -83,11 +86,10 @@ jobs:
       - name: executing remote ssh commands using ssh key
         uses: appleboy/ssh-action@v0.1.10
         with:
-          host: ${{ steps.get-ip.outputs.ip-address }}"
+          host: ${{ steps.get-ip.outputs.ip-address }}
           username: ${{ secrets.SSH_USERNAME }}
           key: ${{ secrets.SSH_KEY_PRIVATE }}
           port: ${{ secrets.SSH_PORT }}
           script: whoami
 
 
-          
