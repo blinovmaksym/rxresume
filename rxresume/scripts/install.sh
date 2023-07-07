@@ -27,4 +27,5 @@ cd scripts/
 chmod +x change_dockerfile.sh
 ./change_dockerfile.sh
 
+echo "Значение переменной PUBLIC_SERVER_URL: $PUBLIC_SERVER_URL"
 # docker compose up -d  --remove-orphans &
