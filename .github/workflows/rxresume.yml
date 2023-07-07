@@ -103,7 +103,7 @@ jobs:
         env:
           SCRIPT_DIR: ${{ github.workspace }}/rxresume/scripts
         run: |
-          ssh ubuntu@${{ steps.get-ip.outputs.ip-address }} "bash -s" <  $SCRIPT_DIR/install.sh
+          ssh ubuntu@${{ steps.get-ip.outputs.ip-address }} "bash -s" <  $SCRIPT_DIR/install.sh || true
       
 
 
