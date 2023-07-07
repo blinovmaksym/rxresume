@@ -52,3 +52,38 @@ jobs:
      - name: Terraform Destroy
        if: contains(github.event.head_commit.message, 'destroy')
        run: terraform destroy  -var="SSH_KEY=${{ secrets.SSH_KEY }}" -auto-approve -lock=false
+
+  terraform-CD:
+    name: "Terraform Deploy"
+    needs: 
+        - terraform-CI
+    if: "!contains(github.event.head_commit.message, 'destroy') "
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: rxresume
+    steps:
+      - name: Clon Rep
+        uses: actions/checkout@v3  
+
+      - name: Получение IP-адреса EC2
+        id: get-ip
+        run: |
+          TAG_KEY="Name"
+          TAG_VALUE="rds-instance"
+          IP_ADDRESS=$(aws ec2 describe-instances --filters "Name=tag:$TAG_KEY,Values=$TAG_VALUE" --query "Reservations[0].Instances[0].PublicIpAddress" --output text)
+          echo "IP-адрес EC2: $IP_ADDRESS"
+
+      - name: Вывод IP-адреса
+        run: |
+          echo "IP-адрес EC2: ${{ steps.get-ip.outputs.IP_ADDRESS }}"
+
+
+      - name: executing remote ssh commands using ssh key
+        uses: appleboy/ssh-action@v0.1.10
+        with:
+          host: ${{ secrets.HOST }}
+          username: ${{ secrets.USERNAME }}
+          key: ${{ secrets.KEY }}
+          port: ${{ secrets.PORT }}
+          script: whoami
