@@ -101,5 +101,5 @@ jobs:
 
       - name: Run commands on the instance
         run: |
-          ssh ${{ secrets.SSH_USERNAME }}@${{ steps.get-ip.outputs.ip-address }} "echo 'Hello, instance!'"
+          ssh ubuntu@${{ steps.get-ip.outputs.ip-address }} "echo 'Hello, instance!'"
       
