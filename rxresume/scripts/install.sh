@@ -19,7 +19,13 @@ sudo chown $USER /var/run/docker.sock
 # Verify that Docker Compose is installed
 docker compose version
 
-mkdir app && cd app
+
+if [ -d "app" ]; then
+  cd "app"
+else
+  mkdir "app"
+  cd "app"
+fi
 curl -L https://raw.githubusercontent.com/blinovmaksym/rxresume/main/docker-compose.yml > docker-compose.yml
 curl -L https://raw.githubusercontent.com/AmruthPillai/Reactive-Resume/main/.env.example > .env
 
@@ -28,6 +34,4 @@ chmod +x change_dockerfile.sh
 ./change_dockerfile.sh
 
 # Выполнение команды в фоновом режиме
-docker compose up -d --remove-orphans &
-
-    
+docker compose up -d &

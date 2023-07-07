@@ -134,7 +134,7 @@ jobs:
           # fi
 
           # Check Service
-          ssh ubuntu@${{ steps.get-ip.outputs.ip-address }} "docker logs $TAG_VALUE" | grep -q "Server is up and running!"
+          ssh ubuntu@${{ steps.get-ip.outputs.ip-address }} "docker logs "app-server"" | grep -q "Server is up and running!"
           if [ $? -eq 0 ]; then
             echo "Server is up and running!"
           else
