@@ -83,14 +83,23 @@ jobs:
           echo "IP-адрес EC2: ${{ steps.get-ip.outputs.ip-address }}"
 
 
-      - name: executing remote ssh commands using ssh key
-        uses: appleboy/ssh-action@v0.1.10
-        with:
-          host: ${{ steps.get-ip.outputs.ip-address }}
-          username: ${{ secrets.SSH_USERNAME }}
-          key: ${{ secrets.SSH_KEY_PRIVATE }}
-          port: ${{ secrets.SSH_PORT }}
-          script: whoami
+      # - name: executing remote ssh commands using ssh key
+      #   uses: appleboy/ssh-action@v0.1.10
+      #   with:
+      #     host: ${{ steps.get-ip.outputs.ip-address }}
+      #     username: ${{ secrets.SSH_USERNAME }}
+      #     key: ${{ secrets.SSH_KEY_PRIVATE }}
+      #     port: ${{ secrets.SSH_PORT }}
+      #     script: whoami
 
+      - name: Configure SSH
+        run: |
+          mkdir -p ~/.ssh/
+          echo "${{ secrets.SSH_KEY_PRIVATE }}" > ~/.ssh/id_rsa
+          chmod 600 ~/.ssh/id_rsa
+          ssh-keyscan -H ${{ steps.get-ip.outputs.ip-address }} >> ~/.ssh/known_hosts
 
-
+      - name: Run commands on the instance
+        run: |
+          ssh ${{ secrets.SSH_USERNAME }}@${{ steps.get-ip.outputs.ip-address }} "echo 'Hello, instance!'"
+      
