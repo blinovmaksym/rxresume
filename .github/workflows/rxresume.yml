@@ -82,17 +82,8 @@ jobs:
         run: |
           echo "IP-адрес EC2: ${{ steps.get-ip.outputs.ip-address }}"
 
-
-      # - name: executing remote ssh commands using ssh key
-      #   uses: appleboy/ssh-action@v0.1.10
-      #   with:
-      #     host: ${{ steps.get-ip.outputs.ip-address }}
-      #     username: ${{ secrets.SSH_USERNAME }}
-      #     key: ${{ secrets.SSH_KEY_PRIVATE }}
-      #     port: ${{ secrets.SSH_PORT }}
-      #     script: whoami
-
       - name: Configure SSH
+        if: contains(github.event.head_commit.message, 'init')
         run: |
           mkdir -p ~/.ssh/
           echo "${{ secrets.SSH_KEY_PRIVATE }}" > ~/.ssh/id_rsa
@@ -100,6 +91,7 @@ jobs:
           ssh-keyscan -H ${{ steps.get-ip.outputs.ip-address }} >> ~/.ssh/known_hosts
 
       - name: Run commands on the instance
+        if: contains(github.event.head_commit.message, 'init')
         env:
           SCRIPT_DIR: ${{ github.workspace }}/rxresume/scripts
         run: |
@@ -120,7 +112,7 @@ jobs:
           fi
       - name: Run commands on the instance
         run : |
-         echo " Visi Your Site: http://${{ steps.get-ip.outputs.ip-address }}:3000""
+         echo " Visi Your Site: http://${{ steps.get-ip.outputs.ip-address }}:3000"
 
 
 
