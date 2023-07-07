@@ -30,5 +30,13 @@ psql --host=my-rds-instance.cj0df8ohbzns.us-east-1.rds.amazonaws.com --port=5432
 
 
 sudo apt-get update
-sudo apt-get install postgresql-client
+sudo apt-get install postgresql-client -y
 psql --host=my-rds-instance.cj0df8ohbzns.us-east-1.rds.amazonaws.com --port=5432 --username=myuser --password --dbname=mydb
+
+scp /путь/к/вашему/скрипту имя_пользователя@адрес_компьютера:/удаленный/путь/скрипт.sh
+scp ./
+
+psql --host=postgres.cj0df8ohbzns.us-east-1.rds.amazonaws.com --port=5432 --username=myuser --password --dbname=mydb
+
+
+postgres.cj0df8ohbzns.us-east-1.rds.amazonaws.com

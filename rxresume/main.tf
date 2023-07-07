@@ -45,6 +45,7 @@ resource "aws_subnet" "rds_subnet2" {
     Name = "Private-subnet"
   }
 }
+
 resource "aws_internet_gateway" "rxresume-GW" {
   vpc_id = aws_vpc.rxresume-vpc.id
 
@@ -70,7 +71,6 @@ resource "aws_route_table_association" "a-front-net" {
   subnet_id      = aws_subnet.public_subnet.id
   route_table_id = aws_route_table.rxresume-RT.id
 }
-
 
 resource "aws_security_group" "rxresume-sg" {
 name = "ssh-app-web"
@@ -145,7 +145,7 @@ resource "aws_instance" "ec2_instance" {
   subnet_id              = aws_subnet.public_subnet.id
   associate_public_ip_address = true
     tags = {
-    Name = "app-server"
+    Name = "app-server1"
   }
 }
 # Создание инстанса RDS (PostGres)
