@@ -137,7 +137,7 @@ resource "aws_security_group" "rxresume-sg-db" {
 }
 
 # Создание инстанса EC2
-resource "aws_instance" "ec2_instance" {
+resource "aws_instance" "ec2_instance1" {
   ami           = "ami-0261755bbcb8c4a84"
   instance_type = "t2.small"
   key_name      = aws_key_pair.key_pair.key_name
