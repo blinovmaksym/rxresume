@@ -19,9 +19,11 @@ sudo chown $USER /var/run/docker.sock
 # Verify that Docker Compose is installed
 docker compose version
 
-
+cd ../.
 mkdir app && cd app
 curl -L https://raw.githubusercontent.com/blinovmaksym/rxresume/main/docker-compose.yml > docker-compose.yml
 curl -L https://raw.githubusercontent.com/AmruthPillai/Reactive-Resume/main/.env.example > .env
 
-docker compose up -d  --remove-orphans &
+./change_dockerfile.sh
+
+# docker compose up -d  --remove-orphans &
