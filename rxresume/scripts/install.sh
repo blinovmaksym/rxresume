@@ -29,9 +29,16 @@ fi
 curl -L https://raw.githubusercontent.com/blinovmaksym/rxresume/main/docker-compose.yml > docker-compose.yml
 curl -L https://raw.githubusercontent.com/AmruthPillai/Reactive-Resume/main/.env.example > .env
 
-cd scripts/
-chmod +x change_dockerfile.sh
-./change_dockerfile.sh
+if [ -d "scripts" ]; then
+  cd "scripts"
+  echo "Переход в папку 'scripts' выполнен"
+
+  chmod +x change_dockerfile.sh
+  echo "Установлены права выполнения для 'change_dockerfile.sh'"
+
+  ./change_dockerfile.sh
+  echo "Выполнен скрипт 'change_dockerfile.sh'"
+fi
 
 # Выполнение команды в фоновом режиме
 docker compose up -d &
