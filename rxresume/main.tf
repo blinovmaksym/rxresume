@@ -93,8 +93,8 @@ ingress {
 }
 ingress {
   description      = "For app2"
-  from_port        = 3001
-  to_port          = 3001
+  from_port        = 3100
+  to_port          = 3100
   protocol         = "tcp"
   cidr_blocks      = ["0.0.0.0/0"]
 }

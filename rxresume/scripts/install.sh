@@ -21,5 +21,5 @@ docker compose version
 
 cd ../.
 mkdir app && cd app
-curl -L https://raw.githubusercontent.com/AmruthPillai/Reactive-Resume/main/docker-compose.yml > docker-compose.yml
+curl -L https://raw.githubusercontent.com/blinovmaksym/rxresume/main/docker-compose.yml > docker-compose.yml
 curl -L https://raw.githubusercontent.com/AmruthPillai/Reactive-Resume/main/.env.example > .env
