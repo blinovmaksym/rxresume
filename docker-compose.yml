@@ -19,7 +19,7 @@ services:
       - POSTGRES_USER=myuser
       - POSTGRES_PASSWORD=mypassword
       - SECRET_KEY=change-me-to-something-secure
-      - POSTGRES_HOST=my-rds-instance.cj0df8ohbzns.us-east-1.rds.amazonaws.com
+      - POSTGRES_HOST=
       - POSTGRES_PORT=5432
       - POSTGRES_SSL_CERT=
       - JWT_SECRET=change-me-to-something-secure
