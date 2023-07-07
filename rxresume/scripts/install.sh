@@ -23,7 +23,7 @@ mkdir app && cd app
 curl -L https://raw.githubusercontent.com/blinovmaksym/rxresume/main/docker-compose.yml > docker-compose.yml
 curl -L https://raw.githubusercontent.com/AmruthPillai/Reactive-Resume/main/.env.example > .env
 
-cd scripts
+cd scripts/
 ./change_dockerfile.sh
 
 # docker compose up -d  --remove-orphans &
