@@ -73,20 +73,21 @@ jobs:
           TAG_VALUE="app-server1"
           IP_ADDRESS=$(aws ec2 describe-instances --filters "Name=instance-state-name,Values=running" "Name=tag:$TAG_KEY,Values=$TAG_VALUE" --query "Reservations[0].Instances[0].PublicIpAddress" --output text)
           echo "IP-адрес EC2: $IP_ADDRESS"
-          echo "ip-address=$IP_ADDRESS" >> $GITHUB_STATE
+          echo "::set-output name=ip-address::$IP_ADDRESS"
 
       - name: Вывод IP-адреса
         run: |
-          echo "IP-адрес EC2: $IP_ADDRESS"
-
-
+          echo "IP-адрес EC2: ${{ steps.get-ip.outputs.ip-address }}"
 
 
       - name: executing remote ssh commands using ssh key
         uses: appleboy/ssh-action@v0.1.10
         with:
-          host: ${{ secrets.HOST }}
-          username: ${{ secrets.USERNAME }}
-          key: ${{ secrets.KEY }}
-          port: ${{ secrets.PORT }}
+          host: ${{ steps.get-ip.outputs.ip-address }}"
+          username: ${{ secrets.SSH_USERNAME }}
+          key: ${{ secrets.SSH_KEY_PRIVATE }}
+          port: ${{ secrets.SSH_PORT }}
           script: whoami
+
+
+          
