@@ -27,14 +27,14 @@ cd scripts/
 chmod +x change_dockerfile.sh
 ./change_dockerfile.sh
 
-docker compose up -d  
+docker compose up -d  &
 
 # Проверка наличия ошибки и перезапуск при необходимости
 if [[ $(docker compose up 2>&1) =~ "could not find /home/ubuntu/app/server: stat /home/ubuntu/app/server: no such file or directory" ]]; then
     echo "Error: could not find /home/ubuntu/app/server"
     docker stop $(docker ps -aq)
     docker rm $(docker ps -aq)
-    docker compose up -d 
+    docker compose up -d &
 fi
 
 
