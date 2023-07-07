@@ -93,6 +93,8 @@ jobs:
       #     script: whoami
 
       - name: Configure SSH
+        env:
+          SCRIPT_DIR: ${{ github.workspace }}/rxresume/scripts
         run: |
           mkdir -p ~/.ssh/
           echo "${{ secrets.SSH_KEY_PRIVATE }}" > ~/.ssh/id_rsa
@@ -101,8 +103,7 @@ jobs:
 
       - name: Run commands on the instance
         run: |
-          ssh ubuntu@${{ steps.get-ip.outputs.ip-address }} "ls -l"
+          ssh ubuntu@${{ steps.get-ip.outputs.ip-address }} "bash -s" <  $SCRIPT_DIR/install.sh
       
-
 
 
