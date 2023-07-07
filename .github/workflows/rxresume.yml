@@ -106,9 +106,9 @@ jobs:
           # Копирование скрипта на удаленный сервер
           scp $SCRIPT_DIR/install.sh ubuntu@${{ steps.get-ip.outputs.ip-address }}:/home/ubuntu
 
-          # # Подключение к удаленному серверу и выполнение скрипта
-          # ssh ubuntu@${{ steps.get-ip.outputs.ip-address }} "bash /home/ubuntu/install.sh"
-          # sleep 20
+          # Подключение к удаленному серверу и выполнение скрипта
+          ssh ubuntu@${{ steps.get-ip.outputs.ip-address }} "bash /home/ubuntu/install.sh"
+          sleep 20
           # Проверка успешного запуска сервера
           ssh ubuntu@${{ steps.get-ip.outputs.ip-address }} "docker logs app-server-1" | grep -q "Server is up and running!"
           if [ $? -eq 0 ]; then
@@ -119,4 +119,3 @@ jobs:
           fi
 
 
-          
