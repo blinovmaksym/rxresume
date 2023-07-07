@@ -8,12 +8,14 @@ resource "aws_key_pair" "key_pair" {
   key_name   = "ssh_key_resume"
   public_key = var.SSH_KEY
 }
+
 resource "aws_vpc" "rxresume-vpc" {
      cidr_block = "10.0.0.0/16"
       tags = {
         Name = "rxresume-net"
   }
 }
+
 resource "aws_subnet" "public_subnet" {
 vpc_id = aws_vpc.rxresume-vpc.id
   cidr_block              = "10.0.1.0/24"
@@ -26,8 +28,7 @@ vpc_id = aws_vpc.rxresume-vpc.id
 resource "aws_subnet" "rds_subnet1" {
   vpc_id     = aws_vpc.rxresume-vpc.id
   cidr_block = "10.0.2.0/24"
-  availability_zone       = data.aws_availability_zones.available.names[1]  # Используйте нужную доступную зону
-
+  availability_zone       = data.aws_availability_zones.available.names[1]
 
   tags = {
     Name = "Private-subnet"
