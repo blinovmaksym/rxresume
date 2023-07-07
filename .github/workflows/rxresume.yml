@@ -69,10 +69,10 @@ jobs:
       - name: Clon Rep
         uses: actions/checkout@v3  
 
-      - name: wait 3 minutes
-        run: |
-          echo "wait 3 minutes"
-          sleep 180
+      # - name: wait 3 minutes
+      #   run: |
+      #     echo "wait 3 minutes"
+      #     sleep 180
 
       - name: Get IP-adress EC2
         id: get-ip
