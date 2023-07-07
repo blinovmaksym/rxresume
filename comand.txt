@@ -38,4 +38,6 @@ scp ./
 
 psql --host=database-1.cj0df8ohbzns.us-east-1.rds.amazonaws.com --port=5432 --username=myuser --password --dbname=mydb
 
-
+    TAG_KEY="Name"
+          TAG_VALUE="rds-instance"
+IP_ADDRESS=$(aws ec2 describe-instances --filters "Name=tag:Name,Values=app-server1" --query "Reservations[0].Instances[0].PublicIpAddress" --output text)
