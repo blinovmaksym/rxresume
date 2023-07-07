@@ -77,7 +77,7 @@ jobs:
 
       - name: Вывод IP-адреса
         run: |
-          echo "IP-адрес EC2: ip-address"
+          echo "IP-адрес EC2: $IP_ADDRESS"
 
 
 
