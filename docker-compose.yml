@@ -12,8 +12,8 @@ services:
     ports:
       - 3100:3100
     environment:
-      - PUBLIC_URL=http://54.91.167.172:3000
-      - PUBLIC_SERVER_URL=http://54.91.167.172:3100
+      - PUBLIC_URL=
+      - PUBLIC_SERVER_URL=
       - PUBLIC_GOOGLE_CLIENT_ID=
       - POSTGRES_DB=mydb
       - POSTGRES_USER=myuser
@@ -53,6 +53,6 @@ services:
     depends_on:
       - server
     environment:
-      - PUBLIC_URL=http://54.91.167.172:3000
-      - PUBLIC_SERVER_URL=http://54.91.167.172:3100
+      - PUBLIC_URL=
+      - PUBLIC_SERVER_URL=
       - PUBLIC_GOOGLE_CLIENT_ID=

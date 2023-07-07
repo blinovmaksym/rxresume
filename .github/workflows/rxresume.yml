@@ -95,24 +95,26 @@ jobs:
         env:
           SCRIPT_DIR: ${{ github.workspace }}/rxresume/scripts
         run: |
-          # Копирование скрипта на удаленный сервер
-          scp $SCRIPT_DIR/install.sh ubuntu@${{ steps.get-ip.outputs.ip-address }}:/home/ubuntu
+          # Создание Папки
+          ssh ubuntu@${{ steps.get-ip.outputs.ip-address }} "mkdir scrips"
+      #     # Копирование скрипта на удаленный сервер
+      #     scp $SCRIPT_DIR/install.sh ubuntu@${{ steps.get-ip.outputs.ip-address }}:/home/ubuntu
 
-          # Подключение к удаленному серверу и выполнение скрипта
-          ssh ubuntu@${{ steps.get-ip.outputs.ip-address }} "bash /home/ubuntu/install.sh"
-          echo "wait 20sec"
-          sleep 20
-          # Проверка успешного запуска сервера
-          ssh ubuntu@${{ steps.get-ip.outputs.ip-address }} "docker logs app-server-1" | grep -q "Server is up and running!"
-          if [ $? -eq 0 ]; then
-            echo "Server is up and running!"
-          else
-            echo "Server failed to start!"
-            exit 1
-          fi
-      - name: Run commands on the instance
-        run : |
-         echo " Visi Your Site: http://${{ steps.get-ip.outputs.ip-address }}:3000"
+      #     # Подключение к удаленному серверу и выполнение скрипта
+      #     ssh ubuntu@${{ steps.get-ip.outputs.ip-address }} "bash /home/ubuntu/install.sh"
+      #     echo "wait 20sec"
+      #     sleep 20
+      #     # Проверка успешного запуска сервера
+      #     ssh ubuntu@${{ steps.get-ip.outputs.ip-address }} "docker logs app-server-1" | grep -q "Server is up and running!"
+      #     if [ $? -eq 0 ]; then
+      #       echo "Server is up and running!"
+      #     else
+      #       echo "Server failed to start!"
+      #       exit 1
+      #     fi
+      # - name: Run commands on the instance
+      #   run : |
+        #  echo " Visit Your Site: http://${{ steps.get-ip.outputs.ip-address }}:3000"
 
 
 
