@@ -78,9 +78,14 @@ jobs:
           echo "IP-адрес EC2: $IP_ADDRESS"
           echo "::set-output name=ip-address::$IP_ADDRESS"
 
-      - name: Вывод IP-адреса
+      - name: Получение имени хоста RDS
+        id: get-rds-hostname
         run: |
-          echo "IP-адрес EC2: ${{ steps.get-ip.outputs.ip-address }}"
+          TAG_VALUE="my-rds-instance"
+          HOSTNAME=$(aws rds describe-db-instances --db-instance-identifier $TAG_VALUE --query "DBInstances[0].Endpoint.Address" --output text)
+          echo "Имя хоста RDS: $HOSTNAME"
+          echo "::set-output name=rds-hostname::$HOSTNAME"
+
 
       - name: Configure SSH
         if: contains(github.event.head_commit.message, 'init')
