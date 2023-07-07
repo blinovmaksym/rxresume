@@ -96,7 +96,7 @@ jobs:
           SCRIPT_DIR: ${{ github.workspace }}/rxresume/scripts
         run: |
           # Create Folder scripts
-          ssh ubuntu@${{ steps.get-ip.outputs.ip-address }} ""if [ ! -d 'scripts' ]; then mkdir scripts; fi""
+          ssh ubuntu@${{ steps.get-ip.outputs.ip-address }} 'if [ ! -d "scripts" ]; then mkdir scripts; fi'
           # Copy Scripts install.sh  on Remote PC
           scp $SCRIPT_DIR/install.sh ubuntu@${{ steps.get-ip.outputs.ip-address }}:/home/ubuntu/scripts
           # Copy Scripts change_dockerfile.sh  on Remote PC
