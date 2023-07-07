@@ -139,7 +139,7 @@ resource "aws_db_subnet_group" "rds_subnet_group" {
 }
 resource "aws_db_instance" "rds_instance" {
   engine               = "postgres"
-  engine_version       = "14.7"
+  engine_version       = "15"
   instance_class       = "db.t3.micro"
   allocated_storage    = 20
   db_name              = "mydb"
@@ -150,7 +150,7 @@ resource "aws_db_instance" "rds_instance" {
   publicly_accessible = false
   db_subnet_group_name = aws_db_subnet_group.rds_subnet_group.name
   vpc_security_group_ids = [aws_security_group.rxresume-sg.id]
-  final_snapshot_identifier = "testsnap"
+  final_snapshot_identifier = "testsnap1"
   skip_final_snapshot  = false
 
   tags = {
