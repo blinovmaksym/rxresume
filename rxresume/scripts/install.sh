@@ -29,9 +29,7 @@ curl -L https://raw.githubusercontent.com/AmruthPillai/Reactive-Resume/main/.env
 cd ../scripts/
 chmod +x change_dockerfile.sh
 ./change_dockerfile.sh
-
-
-
+cd ../app/
 # Выполнение команды в фоновом режиме
 docker compose up -d &
 
