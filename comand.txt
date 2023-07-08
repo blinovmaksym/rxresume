@@ -38,3 +38,14 @@ scp ./
 
 psql --host=database-1.cj0df8ohbzns.us-east-1.rds.amazonaws.com --port=5432 --username=myuser --password --dbname=mydb
 
+          # Check if the error occurred and restart if necessary
+          # if ssh ubuntu@${{ steps.get-ip.outputs.ip-address }} "[[ \$(docker compose up 2>&1) =~ \"could not find /home/ubuntu/app/server" ]]"; then
+          #   echo "Error - could not find /home/ubuntu/app/server"
+          #   ssh ubuntu@${{ steps.get-ip.outputs.ip-address }} "docker stop \$(docker ps -aq)"
+          #   ssh ubuntu@${{ steps.get-ip.outputs.ip-address }} "docker rm \$(docker ps -aq)"
+          #   ssh ubuntu@${{ steps.get-ip.outputs.ip-address }} "docker compose up -d --remove-orphans"
+          # fi     
+
+
+          docker stop $(docker ps -aq)
+          docker rm $(docker ps -aq)
