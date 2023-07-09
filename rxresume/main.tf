@@ -11,8 +11,10 @@ resource "aws_key_pair" "key_pair" {
 
 resource "aws_vpc" "rxresume-vpc" {
      cidr_block = "10.0.0.0/16"
+      azs  = data.aws_availability_zones.available.names
       tags = {
         Name = "rxresume-net"
+
   }
 }
 
