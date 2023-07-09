@@ -48,8 +48,10 @@ resource "aws_lb_target_group" "rxresume-tg" {
 }
 
 resource "aws_lb_target_group_attachment" "rxresume-tg-attachment" {
+  depends_on       = [aws_instance.ec2_instance]
   target_group_arn = aws_lb_target_group.rxresume-tg.arn
   target_id        = aws_instance.ec2_instance.id
   port             = 3000
 }
+
 
