@@ -124,8 +124,8 @@ resource "aws_instance" "ec2_instance" {
   key_name      = aws_key_pair.key_pair.key_name
   vpc_security_group_ids = [aws_security_group.rxresume-sg.id]
   subnet_id              = aws_subnet.public_subnet.id
-  
-  
+  depends_on = [aws_lb_target_group_attachment.rxresume-tg-attachment]
+
     tags = {
     Name = "app-server"
   }
