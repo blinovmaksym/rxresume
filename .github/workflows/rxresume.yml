@@ -69,11 +69,6 @@ jobs:
       - name: Clon Rep
         uses: actions/checkout@v3  
 
-      # - name: wait 3 minutes
-      #   run: |
-      #     echo "wait 3 minutes"
-      #     sleep 180
-
       - name: Get IP-adress EC2
         id: get-ip
         run: |
@@ -91,40 +86,48 @@ jobs:
           echo "Host RDS: $HOSTNAME"
           echo "::set-output name=rds-hostname::$HOSTNAME"
 
+          aws elbv2 describe-load-balancers --query "LoadBalancers[*].DNSName"
 
-      - name: Configure SSH
-        if: contains(github.event.head_commit.message, 'init')
+      - name: Get DNS LB
+        id: get-dns
         run: |
-          mkdir -p ~/.ssh/
-          echo "${{ secrets.SSH_KEY_PRIVATE }}" > ~/.ssh/id_rsa
-          chmod 400 ~/.ssh/id_rsa
-          ssh-keyscan -H ${{ steps.get-ip.outputs.ip-address }} >> ~/.ssh/known_hosts
+          DNS-NAME=$(aws elbv2 describe-load-balancers --query "LoadBalancers[*].DNSName")
+          echo "IDNS-NAME: $DNS-NAME"
+          echo "::set-output name=ip-address::$DNS-NAME"
 
-      - name: Run commands on the instance
-        if: contains(github.event.head_commit.message, 'init')
-        env:
-          SCRIPT_DIR: ${{ github.workspace }}/rxresume/scripts
-          PUBLIC_URL: ${{ steps.get-ip.outputs.ip-address }}
-          POSTGRES_HOST: ${{ steps.get-rds-hostname.outputs.rds-hostname }}
-          TAG_VALUE: "app-server"
-        run: |
+      # - name: Configure SSH
+      #   if: contains(github.event.head_commit.message, 'init')
+      #   run: |
+      #     mkdir -p ~/.ssh/
+      #     echo "${{ secrets.SSH_KEY_PRIVATE }}" > ~/.ssh/id_rsa
+      #     chmod 400 ~/.ssh/id_rsa
+      #     ssh-keyscan -H ${{ steps.get-ip.outputs.ip-address }} >> ~/.ssh/known_hosts
 
-          # Create Folder scripts
-          ssh ubuntu@${{ steps.get-ip.outputs.ip-address }} 'if [ ! -d "scripts" ]; then mkdir scripts; fi'
+      # - name: Run commands on the instance
+      #   if: contains(github.event.head_commit.message, 'init')
+      #   env:
+      #     SCRIPT_DIR: ${{ github.workspace }}/rxresume/scripts
+      #     PUBLIC_URL: ${{ steps.get-ip.outputs.ip-address }}
+      #     POSTGRES_HOST: ${{ steps.get-rds-hostname.outputs.rds-hostname }}
+      #     TAG_VALUE: "app-server"
+      #   run: |
 
-          # Copy Scripts install.sh  on Remote PC
-          scp $SCRIPT_DIR/install.sh ubuntu@${{ steps.get-ip.outputs.ip-address }}:/home/ubuntu/scripts
+      #     # Create Folder scripts
+      #     ssh ubuntu@${{ steps.get-ip.outputs.ip-address }} 'if [ ! -d "scripts" ]; then mkdir scripts; fi'
 
-          # Copy Scripts change_dockerfile.sh  on Remote PC
-          scp $SCRIPT_DIR/change_dockerfile.sh ubuntu@${{ steps.get-ip.outputs.ip-address }}:/home/ubuntu/scripts
+      #     # Copy Scripts install.sh  on Remote PC
+      #     scp $SCRIPT_DIR/install.sh ubuntu@${{ steps.get-ip.outputs.ip-address }}:/home/ubuntu/scripts
 
-          # Connect to Remote PC and execute Scripts
-          ssh ubuntu@${{ steps.get-ip.outputs.ip-address }} "PUBLIC_URL=${PUBLIC_URL} POSTGRES_HOST=${POSTGRES_HOST} bash /home/ubuntu/scripts/install.sh"
+      #     # Copy Scripts change_dockerfile.sh  on Remote PC
+      #     scp $SCRIPT_DIR/change_dockerfile.sh ubuntu@${{ steps.get-ip.outputs.ip-address }}:/home/ubuntu/scripts
 
-          # Wait 20sec
-          echo "wait 20sec"
-          sleep 20
+      #     # Connect to Remote PC and execute Scripts
+      #     ssh ubuntu@${{ steps.get-ip.outputs.ip-address }} "PUBLIC_URL=${PUBLIC_URL} POSTGRES_HOST=${POSTGRES_HOST} bash /home/ubuntu/scripts/install.sh"
 
-      - name: Get URL Our Sites
-        run : |
-         echo " Visit Your Site: http://${{ steps.get-ip.outputs.ip-address }}:3000"
+      #     # Wait 20sec
+      #     echo "wait 20sec"
+      #     sleep 20
+
+      # - name: Get URL Our Sites
+      #   run : |
+      #    echo " Visit Your Site: http://${{ steps.get-ip.outputs.ip-address }}:3000"
