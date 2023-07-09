@@ -10,7 +10,7 @@ resource "aws_elb" "rxresume-lb" {
     lb_port           = 3000  # Порт балансировщика нагрузки
     lb_protocol       = "http"
   }
-
+  instances = [aws_instance.ec2_instance.id] 
 #   listener {
 #     instance_port     = 3000 # Порт на вашем EC2-инстансе
 #     instance_protocol = "http"
@@ -38,20 +38,6 @@ resource "aws_elb" "rxresume-lb" {
 #   type    = "CNAME"
 #   ttl     = "300"
 #   records = [aws_elb.rxresume-lb.dns_name]  # Используйте DNS-имя вашего балансировщика нагрузки
-# }
-
-resource "aws_lb_target_group" "rxresume-tg" {
-  name        = "rxresume-tg"
-  port        = 3000
-  protocol    = "HTTP"
-  vpc_id      = aws_vpc.rxresume-vpc.id
-}
-
-resource "aws_lb_target_group_attachment" "rxresume-tg-attachment" {
-  depends_on       = [aws_instance.ec2_instance]
-  target_group_arn = aws_lb_target_group.rxresume-tg.arn
-  target_id        = aws_instance.ec2_instance.id
-  port             = 3000
-}
+# } 
 
 
