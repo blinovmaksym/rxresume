@@ -52,3 +52,4 @@ resource "aws_lb_target_group_attachment" "rxresume-tg-attachment" {
   target_id        = aws_instance.ec2_instance.id
   port             = 3000
 }
+
