@@ -12,13 +12,13 @@ resource "aws_elb" "rxresume-lb" {
     lb_protocol       = "http"
   }
 
-  listener {
-    instance_port     = 3000 # Порт на вашем EC2-инстансе
-    instance_protocol = "http"
-    lb_port           = 443  # Порт балансировщика нагрузки
-    lb_protocol       = "https"
-    # ssl_certificate_id = "YOUR_SSL_CERTIFICATE_ID"  # Укажите идентификатор SSL-сертификата
-  }
+#   listener {
+#     instance_port     = 3000 # Порт на вашем EC2-инстансе
+#     instance_protocol = "http"
+#     lb_port           = 443  # Порт балансировщика нагрузки
+#     lb_protocol       = "https"
+#     ssl_certificate_id = "YOUR_SSL_CERTIFICATE_ID"  # Укажите идентификатор SSL-сертификата
+#   }
 
   health_check {
     target              = "HTTP:3000/"
