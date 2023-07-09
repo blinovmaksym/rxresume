@@ -33,10 +33,10 @@ resource "aws_elb" "rxresume-lb" {
   connection_draining        = true
   connection_draining_timeout = 300
 }
-resource "aws_route53_record" "my_dns_record" {
-#   zone_id = "YOUR_ROUTE53_ZONE_ID"  # Укажите идентификатор вашей зоны DNS в Route 53
-#   name    = "your-domain.com"       # Укажите ваше доменное имя
-  type    = "CNAME"
-  ttl     = "300"
-  records = [aws_elb.rxresume-lb.dns_name]  # Используйте DNS-имя вашего балансировщика нагрузки
-}
+# resource "aws_route53_record" "my_dns_record" {
+# #   zone_id = "YOUR_ROUTE53_ZONE_ID"  # Укажите идентификатор вашей зоны DNS в Route 53
+# #   name    = "your-domain.com"       # Укажите ваше доменное имя
+#   type    = "CNAME"
+#   ttl     = "300"
+#   records = [aws_elb.rxresume-lb.dns_name]  # Используйте DNS-имя вашего балансировщика нагрузки
+# }
