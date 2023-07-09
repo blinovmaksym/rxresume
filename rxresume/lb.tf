@@ -1,7 +1,6 @@
 resource "aws_elb" "rxresume-lb" {
   name               = "rxresume-lb"
   internal           = false
-  availability_zones = ["us-east-1a"] 
   security_groups = [aws_security_group.rxresume-sg.id]
   subnets = [aws_subnet.public_subnet.id]
 
