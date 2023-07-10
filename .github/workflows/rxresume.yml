@@ -69,12 +69,6 @@ jobs:
       - name: Clon Rep
         uses: actions/checkout@v3
 
-      - name: Setup Terraform
-        uses: hashicorp/setup-terraform@v2
-        with:
-            terraform_version: latest
-            terraform_wrapper: false
-
       - name: Get IP-adress EC2
         id: get-ip
         run: |
@@ -99,43 +93,42 @@ jobs:
         run: |
           DNS_NAME=$(aws elb describe-load-balancers --query "LoadBalancerDescriptions[*].DNSName" --output text)
           echo "DNS_NAME: $DNS_NAME"
-          echo "::set-output name=DNS-NAME::$DNS_NAME"
+          echo "::set-output name=DNS_NAME::$DNS_NAME"
 
-      # - name: Configure SSH
-      #   if: contains(github.event.head_commit.message, 'init')
-      #   run: |
-      #     mkdir -p ~/.ssh/
-      #     echo "${{ secrets.SSH_KEY_PRIVATE }}" > ~/.ssh/id_rsa
-      #     chmod 400 ~/.ssh/id_rsa
-      #     ssh-keyscan -H ${{ steps.get-ip.outputs.ip-address }} >> ~/.ssh/known_hosts
+      - name: Configure SSH
+        if: contains(github.event.head_commit.message, 'init')
+        run: |
+          mkdir -p ~/.ssh/
+          echo "${{ secrets.SSH_KEY_PRIVATE }}" > ~/.ssh/id_rsa
+          chmod 400 ~/.ssh/id_rsa
+          ssh-keyscan -H ${{ steps.get-ip.outputs.ip-address }} >> ~/.ssh/known_hosts
 
-      # - name: Run commands on the instance
-      #   if: contains(github.event.head_commit.message, 'init')
-      #   env:
-      #     SCRIPT_DIR: ${{ github.workspace }}/rxresume/scripts
-      #     PUBLIC_URL: ${{ steps.get-ip.outputs.ip-address }}
-      #     POSTGRES_HOST: ${{ steps.get-rds-hostname.outputs.rds-hostname }}
-      #     TAG_VALUE: "app-server"
-      #   run: |
+      - name: Run commands on the instance
+        if: contains(github.event.head_commit.message, 'init')
+        env:
+          SCRIPT_DIR: ${{ github.workspace }}/rxresume/scripts
+          PUBLIC_URL: ${{ steps.get-dns.outputs.DNS_NAME }}
+          POSTGRES_HOST: ${{ steps.get-rds-hostname.outputs.rds-hostname }}
+        run: |
 
-      #     # Create Folder scripts
-      #     ssh ubuntu@${{ steps.get-ip.outputs.ip-address }} 'if [ ! -d "scripts" ]; then mkdir scripts; fi'
+          # Create Folder scripts
+          ssh ubuntu@${{ steps.get-ip.outputs.ip-address }} 'if [ ! -d "scripts" ]; then mkdir scripts; fi'
 
-      #     # Copy Scripts install.sh  on Remote PC
-      #     scp $SCRIPT_DIR/install.sh ubuntu@${{ steps.get-ip.outputs.ip-address }}:/home/ubuntu/scripts
+          # Copy Scripts install.sh  on Remote PC
+          scp $SCRIPT_DIR/install.sh ubuntu@${{ steps.get-ip.outputs.ip-address }}:/home/ubuntu/scripts
 
-      #     # Copy Scripts change_dockerfile.sh  on Remote PC
-      #     scp $SCRIPT_DIR/change_dockerfile.sh ubuntu@${{ steps.get-ip.outputs.ip-address }}:/home/ubuntu/scripts
+          # Copy Scripts change_dockerfile.sh  on Remote PC
+          scp $SCRIPT_DIR/change_dockerfile.sh ubuntu@${{ steps.get-ip.outputs.ip-address }}:/home/ubuntu/scripts
 
-      #     # Connect to Remote PC and execute Scripts
-      #     ssh ubuntu@${{ steps.get-ip.outputs.ip-address }} "PUBLIC_URL=${PUBLIC_URL} POSTGRES_HOST=${POSTGRES_HOST} bash /home/ubuntu/scripts/install.sh"
+          # Connect to Remote PC and execute Scripts
+          ssh ubuntu@${{ steps.get-ip.outputs.ip-address }} "PUBLIC_URL=${PUBLIC_URL} POSTGRES_HOST=${POSTGRES_HOST} bash /home/ubuntu/scripts/install.sh"
 
-      #     # Wait 20sec
-      #     echo "wait 20sec"
-      #     sleep 20
+          # Wait 20sec
+          echo "wait 20sec"
+          sleep 20
 
-      # - name: Get URL Our Sites
-      #   run : |
-      #    echo " Visit Your Site: http://${{ steps.get-ip.outputs.ip-address }}:3000"
+      - name: Get URL Our Sites
+        run : |
+         echo " Visit Your Site: http://${{ steps.get-dns.outputs.DNS_NAME }}:3000"
 
 
