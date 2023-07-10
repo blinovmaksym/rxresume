@@ -67,7 +67,13 @@ jobs:
         working-directory: rxresume
     steps:
       - name: Clon Rep
-        uses: actions/checkout@v3  
+        uses: actions/checkout@v3
+
+      - name: Setup Terraform
+        uses: hashicorp/setup-terraform@v2
+        with:
+            terraform_version: latest
+            terraform_wrapper: false
 
       - name: Get IP-adress EC2
         id: get-ip
