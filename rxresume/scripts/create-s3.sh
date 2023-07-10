@@ -10,3 +10,5 @@ else
   aws s3api create-bucket --bucket "$bucket_name" 
   echo "Bucket $bucket_name created successfully."
 fi
+
+
