@@ -9,6 +9,13 @@ resource "aws_elb" "rxresume-lb" {
     instance_protocol = "http"
     lb_port           = 3000  # Порт балансировщика нагрузки
     lb_protocol       = "http"
+    
+  }
+    listener {
+    instance_port     = 3100  # Другой порт на вашем EC2-инстансе
+    instance_protocol = "http"
+    lb_port           = 3100  # Другой порт балансировщика нагрузки
+    lb_protocol       = "http"
   }
   instances = [aws_instance.ec2_instance.id] 
 #   listener {
