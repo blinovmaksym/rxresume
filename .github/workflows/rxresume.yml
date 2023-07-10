@@ -91,9 +91,9 @@ jobs:
       - name: Get DNS LB
         id: get-dns
         run: |
-          DNS-NAME=$(aws elbv2 describe-load-balancers)
-          # echo "DNS-NAME: $DNS-NAME"
-          # echo "::set-output name=DNS-NAME::$DNS-NAME"
+          DNS-NAME=$(aws elb describe-load-balancers --query "LoadBalancerDescriptions[*].DNSName" --output text)
+          echo "DNS-NAME: $DNS-NAME"
+          echo "::set-output name=DNS-NAME::$DNS-NAME"
 
       # - name: Configure SSH
       #   if: contains(github.event.head_commit.message, 'init')
