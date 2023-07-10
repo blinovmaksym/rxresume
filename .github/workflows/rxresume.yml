@@ -85,12 +85,12 @@ jobs:
           echo "Host RDS: $HOSTNAME"
           echo "::set-output name=rds-hostname::$HOSTNAME"
 
-      - name: Get DNS LB
-        id: get-dns
-        run: |
-          DNS_NAME=$(aws elb describe-load-balancers --query "LoadBalancerDescriptions[*].DNSName" --output text)
-          echo "DNS_NAME: $DNS_NAME"
-          echo "::set-output name=DNS_NAME::$DNS_NAME"
+      # - name: Get DNS LB
+      #   id: get-dns
+      #   run: |
+      #     DNS_NAME=$(aws elb describe-load-balancers --query "LoadBalancerDescriptions[*].DNSName" --output text)
+      #     echo "DNS_NAME: $DNS_NAME"
+      #     echo "::set-output name=DNS_NAME::$DNS_NAME"
 
       - name: Configure SSH
         if: contains(github.event.head_commit.message, 'init')
@@ -104,7 +104,6 @@ jobs:
         if: contains(github.event.head_commit.message, 'init')
         env:
           SCRIPT_DIR: ${{ github.workspace }}/rxresume/scripts
-          PUBLIC_URL: ${{ steps.get-dns.outputs.DNS_NAME }}
           POSTGRES_HOST: ${{ steps.get-rds-hostname.outputs.rds-hostname }}
         run: |
 
@@ -118,7 +117,7 @@ jobs:
           scp $SCRIPT_DIR/change_dockerfile.sh ubuntu@${{ steps.get-ip.outputs.ip-address }}:/home/ubuntu/scripts
 
           # Connect to Remote PC and execute Scripts
-          ssh ubuntu@${{ steps.get-ip.outputs.ip-address }} "PUBLIC_URL=${PUBLIC_URL} POSTGRES_HOST=${POSTGRES_HOST} bash /home/ubuntu/scripts/install.sh"
+          ssh ubuntu@${{ steps.get-ip.outputs.ip-address }} "POSTGRES_HOST=${POSTGRES_HOST} bash /home/ubuntu/scripts/install.sh"
 
           # Wait 20sec
           echo "wait 20sec"

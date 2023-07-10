@@ -40,9 +40,9 @@ resource "aws_elb" "rxresume-lb" {
   connection_draining_timeout = 300
 }
 
-# resource "aws_route53_zone" "dns" {
-#   name     = ""
-# }
+resource "aws_route53_zone" "dns" {
+  name     = "job.buxonline.org"
+}
 
 
 
