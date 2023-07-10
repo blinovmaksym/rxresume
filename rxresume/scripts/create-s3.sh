@@ -1,6 +1,6 @@
 #!/bin/bash
 
-bucket_name="rxresume3bucketmax"
+bucket_name="rxresume3bucket"
 
 aws s3api head-bucket --bucket "$bucket_name"  2>/dev/null
 
