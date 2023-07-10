@@ -7,7 +7,7 @@ resource "aws_elb" "rxresume-lb" {
   listener {
     instance_port     = 3000  # Порт на вашем EC2-инстансе
     instance_protocol = "http"
-    lb_port           = 3000  # Порт балансировщика нагрузки
+    lb_port           = 80  # Порт балансировщика нагрузки
     lb_protocol       = "http"
     
   }
@@ -27,7 +27,7 @@ resource "aws_elb" "rxresume-lb" {
 #   }
 
   health_check {
-    target              = "HTTP:3000/"
+    target              = "HTTP:80/"
     healthy_threshold   = 2
     unhealthy_threshold = 2
     timeout             = 3
