@@ -12,11 +12,13 @@ on:
 env:
   AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
   AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-  AWS_REGION: ${{ secrets.AWS_REGION }} 
+  # AWS_REGION: ${{ secrets.AWS_REGION }} 
   SSH_KEY: ${{ secrets.SSH_KEY }}
   username: ${{ secrets.SSH_USERNAME }}
   key: ${{ secrets.SSH_KEY_PRIVATE }}
   port: ${{ secrets.SSH_PORT }}
+  AWS_REGION: "us-east-1"
+
 
 jobs:
   terraform-CI:
@@ -91,7 +93,7 @@ jobs:
       - name: Get DNS LB
         id: get-dns
         run: |
-          DNS_NAME=$(aws elb describe-load-balancers --query "LoadBalancerDescriptions[*].DNSName" --output text)
+          DNS_NAME1=$(aws elb describe-load-balancers --query "LoadBalancerDescriptions[*].DNSName" --output text)
           echo "DNS_NAME: $DNS_NAME"
           echo "::set-output name=DNS_NAME::$DNS_NAME"
 
@@ -129,6 +131,6 @@ jobs:
 
       - name: Get URL Our Sites
         run : |
-         echo " Visit Your Site: http://${{ steps.get-dns.outputs.DNS_NAME }}:3000"
+         echo " Visit Your Site: http://${{PUBLIC_URL}}:3000"
 
 
