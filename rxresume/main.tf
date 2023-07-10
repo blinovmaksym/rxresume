@@ -116,7 +116,7 @@ egress {
 }
 # Создание инстанса EC2
 resource "aws_instance" "ec2_instance" {
-  ami           = "ami-0261755bbcb8c4a84"
+  ami           = "ami-0430580de6244e02e"
   instance_type = "t2.small"
   key_name      = aws_key_pair.key_pair.key_name
   vpc_security_group_ids = [aws_security_group.rxresume-sg.id]
