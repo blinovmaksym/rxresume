@@ -92,7 +92,7 @@ jobs:
       - name: Get DNS LB
         id: get-dns
         run: |
-          DNS_NAME1=$(aws elb describe-load-balancers --query "LoadBalancerDescriptions[*].DNSName" --output text)
+          DNS_NAME=$(aws elb describe-load-balancers --query "LoadBalancerDescriptions[*].DNSName" --output text)
           echo "DNS_NAME: $DNS_NAME"
           echo "::set-output name=DNS_NAME::$DNS_NAME"
 
