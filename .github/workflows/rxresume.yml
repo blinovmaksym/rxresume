@@ -12,12 +12,10 @@ on:
 env:
   AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
   AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-  # AWS_REGION: ${{ secrets.AWS_REGION }} 
+  AWS_REGION: ${{ secrets.AWS_REGION }} 
   SSH_KEY: ${{ secrets.SSH_KEY }}
   username: ${{ secrets.SSH_USERNAME }}
   key: ${{ secrets.SSH_KEY_PRIVATE }}
-  port: ${{ secrets.SSH_PORT }}
-  AWS_REGION: "us-east-1"
 
 jobs:
   terraform-CI:
@@ -87,8 +85,6 @@ jobs:
           echo "Host RDS: $HOSTNAME"
           echo "::set-output name=rds-hostname::$HOSTNAME"
 
-          aws elbv2 describe-load-balancers --query "LoadBalancers[*].DNSName"
-
       - name: Get DNS LB
         id: get-dns
         run: |
@@ -127,10 +123,6 @@ jobs:
           # Wait 20sec
           echo "wait 20sec"
           sleep 20
-
-      - name: Get URL Our Sites
-        run : |
-         echo " Visit Your Site: http://${{ steps.get-dns.outputs.DNS_NAME }}:3000"
 
 
 

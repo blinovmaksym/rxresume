@@ -1,5 +1,5 @@
 provider "aws" {
-  region = "us-east-1"
+  region = "us-east-2"
 }
 data "aws_availability_zones" "available" {}
 
@@ -39,9 +39,7 @@ resource "aws_subnet" "rds_subnet1" {
 resource "aws_subnet" "rds_subnet2" {
   vpc_id     = aws_vpc.rxresume-vpc.id
   cidr_block = "10.0.3.0/24"
-  availability_zone       = data.aws_availability_zones.available.names[2]  # Используйте нужную доступную зону
-
-
+  availability_zone       = data.aws_availability_zones.available.names[2]  
   tags = {
     Name = "Private-subnet"
   }
@@ -106,8 +104,7 @@ ingress {
   protocol         = "tcp"
   cidr_blocks      = ["0.0.0.0/0"]
 }
-// Terraform removes the default rule
-  egress {
+egress {
    from_port = 0
    to_port = 0
    protocol = "-1"
