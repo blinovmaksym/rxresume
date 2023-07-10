@@ -19,7 +19,6 @@ env:
   port: ${{ secrets.SSH_PORT }}
   AWS_REGION: "us-east-1"
 
-
 jobs:
   terraform-CI:
     name: "Terraform"
@@ -131,6 +130,6 @@ jobs:
 
       - name: Get URL Our Sites
         run : |
-         echo " Visit Your Site: http://${{PUBLIC_URL}}:3000"
+         echo " Visit Your Site: http://${{ steps.get-dns.outputs.DNS_NAME }}:3000"
 
 
