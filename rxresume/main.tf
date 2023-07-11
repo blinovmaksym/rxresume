@@ -17,12 +17,21 @@ resource "aws_vpc" "rxresume-vpc" {
   }
 }
 
-resource "aws_subnet" "public_subnet" {
+resource "aws_subnet" "public_subnet1" {
 vpc_id = aws_vpc.rxresume-vpc.id
   cidr_block              = "10.0.1.0/24"
   availability_zone       = data.aws_availability_zones.available.names[0]
   tags = {
-    Name = "Public-subnet"
+    Name = "Public-subnet1"
+  }
+}
+
+resource "aws_subnet" "public_subnet2" {
+vpc_id = aws_vpc.rxresume-vpc.id
+  cidr_block              = "10.0.4.0/24"
+  availability_zone       = data.aws_availability_zones.available.names[1]
+  tags = {
+    Name = "Public-subnet2"
   }
 }
 
@@ -32,7 +41,7 @@ resource "aws_subnet" "rds_subnet1" {
   availability_zone       = data.aws_availability_zones.available.names[0]
 
   tags = {
-    Name = "Private-subnet"
+    Name = "Private-subnet1"
   }
 }
 
@@ -41,7 +50,7 @@ resource "aws_subnet" "rds_subnet2" {
   cidr_block = "10.0.3.0/24"
   availability_zone       = data.aws_availability_zones.available.names[1]  
   tags = {
-    Name = "Private-subnet"
+    Name = "Private-subnet2"
   }
 }
 
