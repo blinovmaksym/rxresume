@@ -140,6 +140,7 @@ egress {
     Name = "ssh-sg"
   }
 }
+
 # Создание инстанса EC2
 resource "aws_instance" "ec2_instance" {
   ami           = "ami-0430580de6244e02e"
