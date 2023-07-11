@@ -71,7 +71,7 @@ resource "aws_lb_listener_rule" "http_redirect" {
   }
   condition {
     host_header {
-      values = ["job.buxonline.org.com"]
+      values = ["rxresume-alb-732092174.us-east-2.elb.amazonaws.com"]
     }
 }
 }
@@ -86,7 +86,7 @@ resource "aws_lb_listener_rule" "https_redirect" {
   }
   condition {
     host_header {
-      values = ["job.buxonline.org.com"]
+      values = ["rxresume-alb-732092174.us-east-2.elb.amazonaws.com"]
     }
 }
 }
