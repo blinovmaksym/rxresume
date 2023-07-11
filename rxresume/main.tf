@@ -76,7 +76,7 @@ resource "aws_route_table" "rxresume-RT" {
 }
 
 resource "aws_route_table_association" "a-front-net" {
-  subnet_id      = aws_subnet.public_subnet.id
+  subnet_id      = [aws_subnet.public_subnet1.id,aws_subnet.public_subnet2.id]
   route_table_id = aws_route_table.rxresume-RT.id
 }
 
@@ -143,7 +143,7 @@ resource "aws_instance" "ec2_instance" {
   instance_type = "t2.small"
   key_name      = aws_key_pair.key_pair.key_name
   vpc_security_group_ids = [aws_security_group.rxresume-sg.id]
-  subnet_id              = aws_subnet.public_subnet.id
+  subnet_id              = aws_subnet.public_subnet1.id
   associate_public_ip_address = true
   tags = {
     Name = "app-server"
