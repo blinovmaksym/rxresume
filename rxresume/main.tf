@@ -26,16 +26,6 @@ vpc_id = aws_vpc.rxresume-vpc.id
   }
 }
 
-resource "aws_subnet" "public_subnet2" {
-vpc_id = aws_vpc.rxresume-vpc.id
-  cidr_block              = "10.0.4.0/24"
-  availability_zone       = data.aws_availability_zones.available.names[1]
-  tags = {
-    Name = "Public-subnet2"
-  }
-}
-
-
 resource "aws_subnet" "rds_subnet1" {
   vpc_id     = aws_vpc.rxresume-vpc.id
   cidr_block = "10.0.2.0/24"
@@ -77,14 +67,8 @@ resource "aws_route_table" "rxresume-RT" {
   }
 }
 
-
 resource "aws_route_table_association" "a-front-net" {
   subnet_id      = aws_subnet.public_subnet1.id
-  route_table_id = aws_route_table.rxresume-RT.id
-}
-
-resource "aws_route_table_association" "a-front-net2" {
-  subnet_id      = aws_subnet.public_subnet2.id
   route_table_id = aws_route_table.rxresume-RT.id
 }
 
