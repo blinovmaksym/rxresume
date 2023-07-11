@@ -7,8 +7,8 @@ services:
     ports:
       - 3100:3100
     environment:
-      - PUBLIC_URL=http://job.buxonline.org
-      - PUBLIC_SERVER_URL=http://job.buxonline.org
+      - PUBLIC_URL=https://job.buxonline.org.com:443
+      - PUBLIC_SERVER_URL=https://job.buxonline.org.com:3100
       - PUBLIC_GOOGLE_CLIENT_ID=
       - POSTGRES_DB=postgres
       - POSTGRES_USER=postgres
@@ -43,6 +43,6 @@ services:
     depends_on:
       - server
     environment:
-      - PUBLIC_URL=http://job.buxonline.org
-      - PUBLIC_SERVER_URL=http://job.buxonline.org
+      - PUBLIC_URL=https://job.buxonline.org.com:443
+      - PUBLIC_SERVER_URL=https://job.buxonline.org.com:3100
       - PUBLIC_GOOGLE_CLIENT_ID=
