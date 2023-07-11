@@ -43,13 +43,13 @@ default_action {
 resource "aws_lb_target_group" "rxresume-tg" {
   name     = "rxresume-tg"
   port     = 3000
-  protocol = "HTTPS"
+  protocol = "HTTP"
   vpc_id   = aws_vpc.rxresume-vpc.id
 
   health_check {
     path                = "/"
     port                = "traffic-port"
-    protocol            = "HTTPS"
+    protocol            = "HTTP"
     healthy_threshold   = 2
     unhealthy_threshold = 2
     timeout             = 3
