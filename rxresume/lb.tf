@@ -69,9 +69,10 @@ resource "aws_lb_listener_rule" "http_redirect" {
     target_group_arn = aws_lb_target_group.rxresume-tg.arn
   }
   condition {
-    field  = "host-header"
-    values = ["job.buxonline.org.com"]
-  }
+    host_header {
+      values = ["job.buxonline.org.com"]
+    }
+}
 }
 
 resource "aws_lb_listener_rule" "https_redirect" {
@@ -83,9 +84,10 @@ resource "aws_lb_listener_rule" "https_redirect" {
     target_group_arn = aws_lb_target_group.rxresume-tg.arn
   }
   condition {
-    field  = "host-header"
-    values = ["job.buxonline.org.com"]
-  }
+    host_header {
+      values = ["job.buxonline.org.com"]
+    }
+}
 }
 
 resource "aws_lb_target_group_attachment" "rxresume-tg-attachment" {
