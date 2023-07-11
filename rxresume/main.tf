@@ -76,7 +76,7 @@ resource "aws_route_table" "rxresume-RT" {
 }
 
 resource "aws_route_table_association" "a-front-net" {
-  subnet_id      = [aws_subnet.public_subnet1.id,aws_subnet.public_subnet2.id]
+  subnet_id      = aws_subnet.public_subnet1.id
   route_table_id = aws_route_table.rxresume-RT.id
 }
 
