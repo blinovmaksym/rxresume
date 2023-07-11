@@ -83,6 +83,11 @@ resource "aws_route_table_association" "a-front-net" {
   route_table_id = aws_route_table.rxresume-RT.id
 }
 
+resource "aws_route_table_association" "a-front-net2" {
+  subnet_id      = aws_subnet.public_subnet2.id
+  route_table_id = aws_route_table.rxresume-RT.id
+}
+
 resource "aws_security_group" "rxresume-sg" {
 name = "ssh-app-web"
 vpc_id = aws_vpc.rxresume-vpc.id
