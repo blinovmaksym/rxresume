@@ -29,23 +29,23 @@ resource "aws_lb_listener" "http" {
   }
 }
 
-# resource "aws_lb_listener" "https" {
-#   load_balancer_arn = aws_lb.rxresume-alb.arn
-#   port              = 443
-#   protocol          = "HTTPS"
-#   ssl_policy        = "ELBSecurityPolicy-2016-08"
+resource "aws_lb_listener" "https" {
+  load_balancer_arn = aws_lb.rxresume-alb.arn
+  port              = 443
+  protocol          = "HTTPS"
+  ssl_policy        = "ELBSecurityPolicy-2016-08"
 
-#   certificate_arn = "<YOUR_SSL_CERTIFICATE_ARN>"
+  certificate_arn = "arn:aws:acm:us-east-2:078188406679:certificate/48990258-17d1-480d-9e15-4a1c0113230a"
 
-#   default_action {
-#     type             = "redirect"
-#     redirect {
-#       port       = "3000"
-#       protocol   = "HTTPS"
-#       status_code = "HTTP_301"
-#     }
-#   }
-# }
+  default_action {
+    type             = "redirect"
+    redirect {
+      port       = "3000"
+      protocol   = "HTTPS"
+      status_code = "HTTP_301"
+    }
+  }
+}
 resource "aws_lb_target_group" "rxresume-tg" {
   name     = "rxresume-tg"
   port     = 3000
@@ -71,17 +71,18 @@ resource "aws_lb_listener_rule" "http_redirect" {
     type             = "forward"
     target_group_arn = aws_lb_target_group.rxresume-tg.arn
   }
+
 }
 
-# resource "aws_lb_listener_rule" "https_redirect" {
-#   listener_arn = aws_lb_listener.https.arn
-#   priority     = 1
+resource "aws_lb_listener_rule" "https_redirect" {
+  listener_arn = aws_lb_listener.https.arn
+  priority     = 1
 
-#   action {
-#     type             = "forward"
-#     target_group_arn = aws_lb_target_group.rxresume-tg.arn
-#   }
-# }
+  action {
+    type             = "forward"
+    target_group_arn = aws_lb_target_group.rxresume-tg.arn
+  }
+}
 
 resource "aws_lb_target_group_attachment" "rxresume-tg-attachment" {
   target_group_arn = aws_lb_target_group.rxresume-tg.arn
