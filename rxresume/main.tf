@@ -63,6 +63,7 @@ resource "aws_internet_gateway" "rxresume-GW" {
   }
 }
 
+
 resource "aws_route_table" "rxresume-RT" {
   vpc_id = aws_vpc.rxresume-vpc.id
 
