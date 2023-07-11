@@ -23,10 +23,7 @@ resource "aws_lb_listener" "http" {
       status_code = "HTTP_301"
     }
   }
-  condition {
-    field  = "host-header"
-    values = ["job.buxonline.org.com"]
-  }
+
 }
 
 resource "aws_lb_listener" "https" {
@@ -71,7 +68,10 @@ resource "aws_lb_listener_rule" "http_redirect" {
     type             = "forward"
     target_group_arn = aws_lb_target_group.rxresume-tg.arn
   }
-
+  condition {
+    field  = "host-header"
+    values = ["job.buxonline.org.com"]
+  }
 }
 
 resource "aws_lb_listener_rule" "https_redirect" {
@@ -81,6 +81,10 @@ resource "aws_lb_listener_rule" "https_redirect" {
   action {
     type             = "forward"
     target_group_arn = aws_lb_target_group.rxresume-tg.arn
+  }
+  condition {
+    field  = "host-header"
+    values = ["job.buxonline.org.com"]
   }
 }
 
