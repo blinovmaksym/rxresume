@@ -101,7 +101,7 @@ ingress {
   description      = "For app3"
   from_port        = 443
   to_port          = 443
-  protocol         = "http"
+  protocol         = "https"
   cidr_blocks      = ["0.0.0.0/0"]
 }
 ingress {
