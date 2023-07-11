@@ -43,6 +43,7 @@ resource "aws_lb_listener" "https" {
     }
   }
 }
+
 resource "aws_lb_target_group" "rxresume-tg" {
   name     = "rxresume-tg"
   port     = 3000
