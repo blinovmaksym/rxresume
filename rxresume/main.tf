@@ -92,6 +92,20 @@ ingress {
 }
 ingress {
   description      = "For app2"
+  from_port        = 80
+  to_port          = 80
+  protocol         = "http"
+  cidr_blocks      = ["0.0.0.0/0"]
+}
+ingress {
+  description      = "For app3"
+  from_port        = 443
+  to_port          = 443
+  protocol         = "http"
+  cidr_blocks      = ["0.0.0.0/0"]
+}
+ingress {
+  description      = "For app3"
   from_port        = 3100
   to_port          = 3100
   protocol         = "tcp"
@@ -154,7 +168,9 @@ resource "aws_db_instance" "rds_instance" {
     Name = "rds-instance"
   }
 }
-
+resource "aws_route53_zone" "dns" {
+  name     = "job.buxonline.org"
+}
 
 
 
