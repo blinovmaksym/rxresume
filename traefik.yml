@@ -1,0 +1,41 @@
+# rxresume
+# traefik.yml
+
+# Параметры общей конфигурации Traefik
+global:
+  checkNewVersion: false
+
+# Определение entryPoints (точек входа)
+entryPoints:
+  web:
+    address: ":80"
+  websecure:
+    address: ":443"
+  dash:
+    address: ":8081"
+
+# Провайдеры (providers)
+providers:
+  docker:
+    exposedByDefault: false
+
+# HTTP роутеры (routers) и сервисы (services)
+http:
+  routers:
+    rxresume-traefik:
+      rule: "Host(`job.buxonline.org`)"
+      entryPoints:
+        - dash
+      service: api@internal
+
+  services:
+    rxresume-traefik:
+      loadBalancer:
+        servers:
+          - url: "http://rxresume-traefik"
+
+# Конфигурация TLS
+tls:
+  certificates:
+    - certFile: "/cert.pem"
+      keyFile: "/cert_key.pem"

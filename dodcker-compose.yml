@@ -1,0 +1,89 @@
+version: "3.8"
+
+services:
+  server:
+    image: amruthpillai/reactive-resume:server-latest
+    container_name: rxresume-server
+    restart: always
+    expose:
+      - 3100
+    environment:
+      - PUBLIC_URL=http://job.buxonline.org
+      - PUBLIC_SERVER_URL=http://job.buxonline.org/api
+      - SERVER_URL=https://job.buxonline.org/api
+      - POSTGRES_DB=postgres
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+      - SECRET_KEY=change-me-to-something-secure
+      - POSTGRES_HOST=my-rds-instance.csw71i0bv7gj.us-east-2.rds.amazonaws.com
+      - POSTGRES_PORT=5432
+   networks:
+      - proxy
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.rxresume-server.rule=Host(`job.buxonline.org`) && PathPrefix(`/api`)"
+      - "traefik.http.routers.rxresume-server.entrypoints=websecure"
+      - "traefik.http.services.rxresume-server.loadbalancer.server.port=3100"
+      - "traefik.docker.network=proxy"
+      - "traefik.http.routers.rxresume-server.tls=true"
+      - "traefik.http.routers.rxresume-server.tls.certfile=./cert.pem"
+      - "traefik.http.routers.rxresume-server.tls.certresolver=default"
+
+      - "traefik.http.routers.rxresume-server.service=rxresume-server"
+  client:
+    image: amruthpillai/reactive-resume:client-latest
+    container_name: rxresume-client
+    restart: always
+    expose:
+      - 3000
+    depends_on:
+      - server
+    environment:
+      - PUBLIC_URL=http://job.buxonline.org
+      - PUBLIC_SERVER_URL=http://job.buxonline.org/api
+      - SERVER_URL=https://job.buxonline.org/api
+      - PUBLIC_GOOGLE_CLIENT_ID=
+    networks:
+      - proxy
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.rxresume-client.rule=Host(`job.buxonline.org`)"
+      - "traefik.http.services.rxresume-client.loadbalancer.server.port=3000"
+      - "traefik.docker.network=proxy"
+
+
+  traefik:
+    image: traefik:v2.10.3
+    container_name: rxresume-traefik
+    restart: unless-stopped
+    command:
+      - "--log.level=INFO"
+      - "--api.insecure=true"
+      - "--api.dashboard=true"
+      - "--providers.docker=true"
+      - "--providers.docker.exposedbydefault=false"
+      - "--entrypoints.web.address=:80"
+      - "--entrypoints.websecure.address=:443"
+      - "--entrypoints.dash.address=:8081"
+   ports:
+      - 80:80
+      - 443:443
+      - 8081:8081
+    networks:
+      - proxy
+    volumes:
+       - /var/run/docker.sock:/var/run/docker.sock:ro
+      - ./traefik.yml:/traefik.yml
+     labels:
+       - "traefik.enable=true"
+       - "traefik.http.routers.rxresume-traefik.rule=Host(`job.buxonline.org`)"  
+       - "traefik.http.routers.rxresume-traefik.entrypoints=dash"
+       - "traefik.http.services.rxresume-traefik.loadbalancer.server.port=8080"  
+       - "traefik.http.routers.rxresume-traefik.service=api@internal"
+       - "traefik.docker.network=proxy"
+       - "traefik.http.routers.rxresume-server.tls=true"
+       - "traefik.http.routers.rxresume-server.tls.certfile=./cert.pem"
+       - "traefik.http.routers.rxresume-server.tls.keyfile=./cert_key.pem"
+networks:
+  proxy:
+    external: true
